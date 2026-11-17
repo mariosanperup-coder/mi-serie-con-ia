@@ -71,7 +71,7 @@ const periodico = id => `<g id="${id}" opacity="0"><g transform="rotate(-5 540 7
   <text x="540" y="600" text-anchor="middle" font-family="Inter" font-weight="900" font-size="92" fill="#1A1A1A">¿FRAUDE EN</text>
   <text x="540" y="700" text-anchor="middle" font-family="Inter" font-weight="900" font-size="92" fill="#1A1A1A">BÉLMEZ?</text>
   <rect x="240" y="740" width="300" height="250" fill="#8A847A" stroke="#1A1A1A" stroke-width="4"/>
-  <g transform="translate(390 865) scale(1.1)" fill="none" stroke="#2A2620" stroke-width="7"><path d="M-40 -28 q12 -12 26 0 M14 -28 q12 -12 26 0 M-26 40 q26 14 52 0"/><circle cx="-27" cy="-10" r="8" fill="#2A2620"/><circle cx="27" cy="-10" r="8" fill="#2A2620"/></g>
+  <g transform="translate(390 865) scale(0.95 0.8)" filter="url(#mancha)"><ellipse rx="80" ry="100" fill="#5A544A"/><ellipse cx="-30" cy="-14" rx="16" ry="11" fill="#2A2620"/><ellipse cx="30" cy="-13" rx="15" ry="11" fill="#2A2620"/><path d="M-6 -2 Q-12 20 -2 32 Q8 32 8 24 Q4 12 4 -2 Z" fill="#3A342C"/><path d="M-32 48 Q0 60 32 46 Q18 68 0 68 Q-20 68 -32 48 Z" fill="#2A2620"/></g>
   ${[0, 1, 2, 3, 4, 5, 6, 7].map(i => `<path d="M570 ${760 + i * 30} H${840 - (i % 3) * 40}" stroke="#7A766E" stroke-width="8"/>`).join('')}
   ${[0, 1, 2, 3].map(i => `<path d="M240 ${1030 + i * 28} H${840 - (i % 2) * 120}" stroke="#7A766E" stroke-width="8"/>`).join('')}</g></g>`;
 const sobreAzucar = id => `<g id="${id}" opacity="0" transform="translate(260 1452) rotate(-8) scale(0.4)"><rect x="-120" y="-70" width="240" height="140" rx="8" fill="#F4F0E6" stroke="#0B0E13" stroke-width="6"/>
@@ -88,7 +88,7 @@ const ESCENAS = {
   e03: `<g id="e03a"><g id="e03zoomA">${fondo(pueblo())}</g>${etiqueta('e03rot', 'BÉLMEZ DE LA MORALEDA', 540, 260)}${etiqueta('e03rot2', 'JAÉN · 1971', 540, 360)}</g>
     <g id="e03b" style="display:none"><g id="e03zoomB">${fondo(cocina())}${caraSuelo('e03cara', 600, 1660, 1.5)}</g></g>`,
   e04: `<g id="e04zoom">${fondo(cocina())}${caraSuelo('e04cara', 600, 1660, 1.5)}
-    <ellipse id="e04yeso" cx="600" cy="1660" rx="200" ry="80" fill="#EDE7DA" opacity="0"/>
+    <g id="e04yeso" opacity="0" filter="url(#mancha)"><ellipse cx="600" cy="1662" rx="215" ry="86" fill="#CFC8BA"/><ellipse cx="575" cy="1655" rx="150" ry="58" fill="#E2DCD0"/><ellipse cx="650" cy="1675" rx="70" ry="24" fill="#EDE8DE"/></g>
     <g id="e04alb">${sombra(420, 1730, 130)}${capa(albanil.raspando(), 230, 1010, 1.05)}</g></g><rect id="e04fundido" width="1080" height="1920" fill="#000" opacity="0"/>
     ${etiqueta('e04dias', 'DÍAS DESPUÉS…', 540, 300)}`,
   e05: `<g id="e05a">${fondo(F('002/b03_pasillo')())}${caraSuelo('e05c1', 560, 1180, 0.7)}${caraSuelo('e05c2', 420, 1450, 1.0)}${caraSuelo('e05c3', 700, 1700, 1.3)}</g>
@@ -100,13 +100,13 @@ const ESCENAS = {
   e07: `${fondo(archivoSinMesa)}<g id="e07lucia"><g id="e07F">${capa(luciaFrente({ cara: 'esceptica' }), 290, 760, 1.25, '', 'lucia')}</g>
       <g id="e07P" style="display:none">${capa(luciaPerfil(), 290, 760, 1.25, '', 'lucia')}</g></g>${mesa()}`,
   e08: `${fondo(archivoSinMesa)}<g id="e08teo"><g id="e08F">${capa(teoFrente({ cara: 'chulo' }), 290, 760, 1.25, '', 'teo')}</g>
-      <g id="e08P" style="display:none" transform="translate(1080 0) scale(-1 1)">${capa(teoPerfil(), 290, 760, 1.25, '', 'teo')}</g></g>${mesa()}${periodico('e08diario')}`,
+      <g id="e08P" style="display:none" transform="translate(1080 0) scale(-1 1)">${capa(teoPerfil(), 290, 760, 1.25, '', 'teo')}</g></g>${mesa()}<rect id="e08oscuro" width="1080" height="1920" fill="#05080C" opacity="0"/>${periodico('e08diario')}`,
   e09: `${fondo(F('002/b04_laboratorio')())}${sombra(790, 1719, 110)}${capa(luciaFrente({ cara: 'explicando' }), 560, 900, 1.15, '', 'lucia')}${sobreAzucar('e09sobre')}${etiqueta('e09rot', 'CSIC', 260, 300)}`,
   e10: `<g id="e10zoom">${fondo(cocina())}${caraSuelo('e10cara', 600, 1660, 1.5)}</g><rect width="1080" height="1920" fill="#000" opacity="0.25"/>
     ${sello('e10s1', 'PARANORMAL', 540, 520, -8)}${sello('e10s2', 'FRAUDE', 540, 820, 6)}${sello('e10s3', 'SIN PINTURA', 540, 1120, -4)}${etiqueta('e10ano', '2014', 540, 1300)}`,
   e11: `<g id="e11zoom">${fondo(pueblo())}</g><rect id="e11noche" width="1080" height="1920" fill="#0A1A2E" opacity="0"/>
-    <circle id="e11luz" cx="245" cy="1450" r="160" fill="url(#hFocoG)" opacity="0"/>`,
-  e12: `<g id="e12zoom">${fondo(archivoSinMesa)}${capa(teoFrente({ cara: 'serio' }), 290, 760, 1.25, '', 'teo')}${mesa()}${capa(O.expediente(), 600, 1380, 0.55, 'e12exp')}</g>`,
+    <circle id="e11luz" cx="262" cy="1095" r="230" fill="url(#hFocoG)" opacity="0"/>`,
+  e12: `<g id="e12zoom">${fondo(archivoSinMesa)}${capa(teoFrente({ cara: 'serio' }), 290, 760, 1.25, '', 'teo')}${mesa()}<g transform="translate(560 1505) scale(0.55 0.22)">${capa(O.expediente(), 0, 0, 1)}</g></g>`,
   e13: `<rect width="1080" height="1920" fill="#07090D"/><circle cx="540" cy="760" r="520" fill="url(#hFocoG)"/>
     <g id="e13tinta" opacity="0">${capa(tinta({ pose: 'desconfia' }), 390, 520, 1.0)}</g>
     <g id="e13txt" opacity="0"><text x="540" y="1060" text-anchor="middle" font-family="Inter" font-weight="900" font-size="86" fill="#FFD34D" stroke="#0B0E13" stroke-width="12" paint-order="stroke">¿Fraude o</text>
@@ -203,7 +203,7 @@ function render(t) {
     case 'e01': { zoom('e01zoom', 1 + 0.15 * suave(prog(t, T.aparece - 1, e.fin)), 600, 1560);
       const k = prog(t, T.aparece - 0.6, T.aparece + 0.8); op('e01cara', suave(k));
       const sust = t >= T.aparece + 0.4; ver('e01maria', !sust); ver('e01mariaS', sust); break; }
-    case 'e02': $('e02zoom').setAttribute('transform', \`translate(540 1150) scale(\${1.75 + 0.1 * suave(p)}) translate(-700 -1560)\`); zoom('e02teo', resp, 760, 1760);
+    case 'e02': $('e02zoom').setAttribute('transform', \`translate(540 960) scale(\${1.75 + 0.08 * suave(p)}) translate(-720 -1350)\`); zoom('e02teo', resp, 760, 1760);
       op('e02rot', prog(d, 0.15, 0.5)); $('e02rot').setAttribute('transform', \`translate(540 300) scale(\${1.25 - 0.25 * suave(prog(d, 0.15, 0.45))})\`); break;
     case 'e03': { const b = t >= T.cemento; ver('e03a', !b); ver('e03b', b);
       zoom('e03zoomA', 1 + 0.12 * prog(t, e.ini, T.cemento), 680, 700); op('e03rot', prog(d, 0.2, 0.6)); op('e03rot2', prog(d, 0.6, 1));
@@ -222,7 +222,7 @@ function render(t) {
     case 'e07': { const an = d < 0.9 ? 1 : 0; andar('e07lucia', an); ver('e07P', an); ver('e07F', !an); mueve('e07lucia', -620 * (1 - suave(prog(d, 0, 0.9))), -paso(t) * an); break; }
     case 'e08': { const an = d < 0.9 ? 1 : 0; andar('e08teo', an); ver('e08P', an); ver('e08F', !an);
       $('e08teo').setAttribute('transform', \`translate(\${700 * (1 - suave(prog(d, 0, 0.9)))} \${-paso(t) * an}) translate(540 1650) scale(\${resp}) translate(-540 -1650)\`);
-      const k = suave(prog(t, T.periodico - 0.2, T.periodico + 0.3)); op('e08diario', k);
+      const k = suave(prog(t, T.periodico - 0.2, T.periodico + 0.3)); op('e08diario', k); op('e08oscuro', 0.8 * k);
       $('e08diario').setAttribute('transform', \`translate(540 760) scale(\${0.6 + 0.4 * k}) rotate(\${(1 - k) * 25}) translate(-540 -760)\`); break; }
     case 'e09': op('e09rot', prog(d, 0.2, 0.6)); { const k = suave(prog(t, T.sobre - 0.2, T.sobre + 0.25)); op('e09sobre', k);
       $('e09sobre').setAttribute('transform', \`translate(260 \${1452 - 120 * (1 - k)}) rotate(-8) scale(0.4)\`); } break;
@@ -244,6 +244,7 @@ window.render = render;
   const [modo, salida, ...tiempos] = process.argv.slice(2);
   const b = await chromium.launch();
   const pg = await b.newPage({ viewport: { width: W, height: H }, deviceScaleFactor: 1 });
+  pg.on('pageerror', e => console.log('ERROR:', e.message));
   await pg.setContent(html, { waitUntil: 'load' });
   await pg.evaluate(() => document.fonts.ready);
   if (modo === 'fotos') {

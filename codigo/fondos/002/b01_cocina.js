@@ -54,6 +54,6 @@ module.exports = function cocina() {
   <!-- suelo de cemento -->
   <rect y="1310" width="1080" height="610" fill="url(#suelo)"/><rect y="1310" width="1080" height="610" filter="url(#grano)"/>
   <path d="M0 1310 H1080" stroke="#5E584E" stroke-width="6"/>
-  <path d="M300 1420 L760 1360 L1000 1560 L420 1700 Z" fill="#FFE3A0" opacity="0.18"/>
+  <ellipse cx="700" cy="1500" rx="460" ry="150" fill="url(#hSol)" opacity="0.55"/>
   </svg>`;
 };
