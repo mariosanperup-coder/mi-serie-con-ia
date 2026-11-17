@@ -59,6 +59,28 @@ const rotuloCanal = id => `<g id="${id}" opacity="0" transform="translate(540 30
 const SC = 0.27;
 const teoMini = (cara, fx, fy) => `${sombra(fx, fy, 50)}${capa(teoFrente({ cara }), fx - 200 * SC, fy - 712 * SC, SC, '', 'teo')}${capa(tinta({ pose: 'tranquilo' }), fx - 200 * SC + 60, fy - 712 * SC + 27, 0.092)}`;
 const turistaMini = (i, fx, fy, s = SC) => `${sombra(fx, fy, 46)}${capa(turista(i), fx - 200 * s, fy - 712 * s, s)}`;
+// Multitud: muchos turistas con colores variados, más pequeños al fondo. Zona de la explanada.
+const COLORES = ['#4E7A3E', '#C8483E', '#2E5AA0', '#8A6AA0', '#D9A030', '#2E8A8A', '#B85A8A', '#5A5A6A', '#E07A3A', '#3A6A4A', '#A03A3A', '#6A8AC0'];
+function multitud(n, semilla, { y0 = 1480, y1 = 1900, x0 = -40, x1 = 1120, hueco = null } = {}) {
+  let a = semilla; const rnd = () => { a = (a * 9301 + 49297) % 233280; return a / 233280; };
+  const gente = [];
+  for (let i = 0; i < n; i++) {
+    const y = y0 + (y1 - y0) * Math.pow(rnd(), 0.8), x = x0 + (x1 - x0) * rnd();
+    if (hueco && Math.abs(x - hueco[0]) < hueco[2] && Math.abs(y - hueco[1]) < hueco[2] * 0.5) continue;
+    // Zonas prohibidas: el banco de piedra (y la gente justo detrás, que quedaría encima) y las rocas de las esquinas.
+    if (x < 600 && y > 1540 && y < 1900) continue;
+    if (x < 340 && y > 1730) continue;
+    if (x > 740 && y > 1840) continue;
+    gente.push([x, y, Math.floor(rnd() * 4), COLORES[Math.floor(rnd() * COLORES.length)], rnd() < 0.5]);
+  }
+  gente.sort((p, q) => p[1] - q[1]);
+  return gente.map(([x, y, tipo, color, espejo]) => {
+    const sc = 0.17 + (y - y0) / (y1 - y0) * 0.17;
+    let svg = turista(tipo).replace(/#4E7A3E|#C8483E|#2E5AA0|#8A6AA0/g, color);
+    const fig = capa(svg, x - 200 * sc, y - 712 * sc, sc);
+    return sombra(x, y, 46 * sc / 0.27) + (espejo ? `<g transform="translate(${2 * x} 0) scale(-1 1)">${fig}</g>` : fig);
+  }).join('');
+}
 const movil = (x, y, rot, titular, i) => `<g class="movil" data-i="${i}" opacity="0" transform="translate(${x} ${y}) rotate(${rot})">
   <rect x="-110" y="-200" width="220" height="400" rx="26" fill="#151515" stroke="#2A2A2A" stroke-width="6"/>
   <rect x="-96" y="-170" width="192" height="330" rx="6" fill="#F4F2EE"/>
@@ -70,7 +92,7 @@ const movil = (x, y, rot, titular, i) => `<g class="movil" data-i="${i}" opacity
 
 const ESCENAS = {
   e01: `<g id="e01zoom">${fondo(iglesia())}${cuadro('e01c', true)}</g>`,
-  e02: `<g id="e02zoom">${fondo(santuario())}<g id="e02teo">${teoMini('chulo', 380, 1600)}</g></g>${rotuloCanal('e02rot')}`,
+  e02: `<g id="e02zoom">${fondo(santuario())}<g id="e02teo">${teoMini('chulo', 640, 1640)}</g></g>${rotuloCanal('e02rot')}`,
   e03: `<g id="e03a"><g id="e03zoomA">${fondo(santuario())}</g>${etiqueta('e03rot', 'BORJA · ZARAGOZA', 540, 260)}${etiqueta('e03rot2', 'SANTUARIO DE MISERICORDIA', 540, 360)}</g>
     <g id="e03b" style="display:none"><g id="e03zoomB">${fondo(iglesia())}${cuadro('e03c', false)}</g>${etiqueta('e03ano', 'HACIA 1930', 540, 1560)}</g>`,
   e04: `<g id="e04zoom">${fondo(iglesia())}${cuadro('e04orig', false)}<g id="e04rest" opacity="0">${cuadro('e04r', true)}</g>
@@ -94,7 +116,7 @@ const ESCENAS = {
     ${movil(250, 520, -8, 'ECCE MONO', 0)}${movil(800, 470, 7, 'MONKEY CHRIST', 1)}${movil(540, 980, 0, '¡VIRAL!', 2)}${movil(240, 1430, 6, 'BBC NEWS', 3)}${movil(830, 1440, -6, 'OMG 😂', 4)}
     <g id="e08sello" opacity="0" transform="translate(540 960) rotate(-8)"><rect x="-420" y="-110" width="840" height="220" rx="14" fill="#F2E6CF"/><rect x="-420" y="-110" width="840" height="220" rx="14" fill="none" stroke="#C0392B" stroke-width="16"/>
       <text x="0" y="50" text-anchor="middle" font-family="Inter" font-weight="900" font-size="150" fill="#C0392B">ECCE MONO</text></g>`,
-  e09: `<g id="e09zoom">${fondo(santuario())}${[[640, 1525, 3], [590, 1555, 1], [540, 1585, 0], [490, 1615, 2], [440, 1645, 3], [390, 1675, 1], [340, 1705, 0]].map(([x, y, i], k) => turistaMini(i, x + (k % 2) * 10, y, SC + (y - 1530) * 0.0006)).join('')}</g>
+  e09: `<g id="e09zoom">${fondo(santuario())}${multitud(150, 7)}</g>
     <rect id="e09flash" width="1080" height="1920" fill="#fff" opacity="0"/>
     <g id="e09cont" opacity="0"><rect x="200" y="240" width="680" height="210" rx="14" fill="#0B0E13" opacity="0.85"/>
       <text id="e09num" x="540" y="370" text-anchor="middle" font-family="Inter" font-weight="900" font-size="110" fill="#FFD34D">0</text><text x="540" y="420" text-anchor="middle" font-family="JetBrains Mono" font-weight="800" font-size="34" fill="#F2E6CF">VISITANTES</text></g>
@@ -105,8 +127,8 @@ const ESCENAS = {
       <text x="300" y="1170" text-anchor="middle" font-family="JetBrains Mono" font-weight="800" font-size="34" fill="#0B0E13">ENTRADA</text>
       <text x="300" y="1236" text-anchor="middle" font-family="Inter" font-weight="900" font-size="64" fill="#C0392B">2 €</text></g>
     ${sombra(780, 1660, 100)}${capa(luciaFrente({ cara: 'explicando' }), 650, 1000, 0.92, '', 'lucia')}</g>`,
-  e11: `<g id="e11zoom">${fondo(santuario())}${[[660, 1530, 3], [600, 1560, 1], [720, 1575, 0], [540, 1590, 2]].map(([x, y, i]) => turistaMini(i, x, y)).join('')}
-    <g id="e11teo">${teoMini('chulo', 420, 1640)}</g></g>`,
+  e11: `<g id="e11zoom">${fondo(santuario())}${multitud(130, 3, { hueco: [560, 1830, 170] })}
+    <g id="e11teo">${teoMini('chulo', 560, 1860)}</g></g>`,
   e12: `<g id="e12zoom">${fondo(archivoSinMesa)}${capa(teoFrente({ cara: 'chulo' }), 290, 760, 1.25, '', 'teo')}${mesa()}<g transform="translate(560 1505) scale(0.55 0.22)">${capa(O.expediente(), 0, 0, 1)}</g></g>`,
   e13: `<rect width="1080" height="1920" fill="#07090D"/><circle cx="540" cy="760" r="520" fill="url(#hFocoG)"/>
     <g id="e13tinta" opacity="0">${capa(tinta({ pose: 'desconfia' }), 390, 520, 1.0)}</g>
@@ -202,7 +224,7 @@ function render(t) {
   const resp = 1 + 0.008 * Math.sin(t * 2.4); // respiración
   switch (e.id) {
     case 'e01': $('e01zoom').setAttribute('transform', \`translate(540 900) scale(\${1.1 + 1.3 * suave(prog(d, 0, 4))}) translate(-620 -640)\`); break;
-    case 'e02': $('e02zoom').setAttribute('transform', \`translate(540 1150) scale(\${2.3 + 0.1 * suave(p)}) translate(-420 -1480)\`); zoom('e02teo', resp, 380, 1600);
+    case 'e02': $('e02zoom').setAttribute('transform', \`translate(540 1150) scale(\${2.3 + 0.1 * suave(p)}) translate(-640 -1520)\`); zoom('e02teo', resp, 640, 1640);
       op('e02rot', prog(d, 0.15, 0.5)); $('e02rot').setAttribute('transform', \`translate(540 300) scale(\${1.25 - 0.25 * suave(prog(d, 0.15, 0.45))})\`); break;
     case 'e03': { const b = t >= T.santuario + 0.3; ver('e03a', !b); ver('e03b', b);
       zoom('e03zoomA', 1 + 0.1 * prog(t, e.ini, T.santuario), 600, 1200); op('e03rot', prog(d, 0.2, 0.6)); op('e03rot2', prog(d, 0.6, 1));
@@ -220,13 +242,13 @@ function render(t) {
     case 'e08': document.querySelectorAll('#e08 .movil').forEach(m => { const i = +m.dataset.i, k = suave(prog(t, T.agosto + i * 0.7, T.agosto + i * 0.7 + 0.3));
         m.setAttribute('opacity', k * (1 - 0.6 * prog(t, T.ecce_mono - 0.2, T.ecce_mono))); });
       { const s = prog(t, T.ecce_mono - 0.1, T.ecce_mono + 0.05); op('e08sello', s); $('e08sello').setAttribute('transform', \`translate(540 960) rotate(-8) scale(\${1.6 - 0.6 * suave(s)})\`); } break;
-    case 'e09': { $('e09zoom').setAttribute('transform', \`translate(540 1200) scale(\${1.9 + 0.1 * suave(p)}) translate(-540 -1560)\`);
+    case 'e09': { $('e09zoom').setAttribute('transform', \`translate(540 1920) scale(\${1.3 + 0.08 * suave(p)}) translate(-560 -1920)\`);
       op('e09flash', Math.max(0, 0.5 - 6 * Math.min(...[1.3, 2.6, 4.1, 5.5].map(f => Math.abs(d - f)))));
       const k = prog(t, T.ciento - 0.1, T.ciento + 1.4); op('e09cont', prog(t, T.ciento - 0.3, T.ciento));
       $('e09num').textContent = Math.round(160000 * suave(k)).toLocaleString('es-ES');
       op('e09hab', prog(t, T.cinco - 0.2, T.cinco + 0.2)); break; }
     case 'e10': zoom('e10zoom', 1.05 + 0.05 * p, 400, 1200); { const s = prog(t, T.dos - 0.2, T.dos + 0.1); op('e10cartel', s); } break;
-    case 'e11': $('e11zoom').setAttribute('transform', \`translate(540 1150) scale(\${2.2 - 1.2 * suave(prog(t, T.mundo - 1.5, e.fin))}) translate(-540 \${-1520 + 560 * suave(prog(t, T.mundo - 1.5, e.fin))})\`); zoom('e11teo', resp, 420, 1640); break;
+    case 'e11': $('e11zoom').setAttribute('transform', \`translate(540 1920) scale(\${2.1 - 1.1 * suave(prog(t, T.mundo - 1.5, e.fin))}) translate(\${-560 + 20 * suave(prog(t, T.mundo - 1.5, e.fin))} -1920)\`); zoom('e11teo', resp, 560, 1860); break;
     case 'e12': zoom('e12zoom', 1 + 0.2 * suave(p), 540, 1000); op('negro', prog(t, e.fin - 0.7, e.fin)); break;
     case 'e13': op('e13tinta', prog(d, 0.3, 0.8)); op('e13txt', prog(d, 0.6, 1.1)); op('negro', 1 - prog(d, 0, 0.4)); break;
   }
