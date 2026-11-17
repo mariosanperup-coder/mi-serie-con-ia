@@ -1,8 +1,11 @@
 # Plan de publicación: Expediente Vela (solo YouTube)
 
 ## Reglas
-- **1 vídeo al día**, a hora fija (hora de España), programado desde YouTube Studio → *Programar*:
-  - **Todos los días a las 16:00** (el 001 sale el martes 17 a las 21:00, que ya estaba programado).
+- **3 vídeos al día** (hora de España), programados desde YouTube Studio → *Programar*:
+  - **Lunes a viernes:** **13:30** (curiosidad 🧠, hora de comer) · **18:30** (curiosidad o misterio, salida de clase/trabajo) · **21:30** (misterio 👻, después de cenar).
+  - **Sábados y domingos:** **12:00** · **17:30** · **21:00**.
+  - Separación mínima de 4–5 horas entre vídeos para que no se pisen.
+  - A las 2–3 semanas: revisar en YouTube Studio → Audiencia → *Cuándo están conectados tus espectadores* y ajustar.
 - **Producción:** un vídeo al día (para no gastar de golpe los créditos de ElevenLabs).
 - **Colchón:** no se publica nada que no esté terminado. Lo ideal es ir 2 o 3 vídeos por delante.
 - **Alternar:** miedo → curiosidad → miedo… para no cansar.
