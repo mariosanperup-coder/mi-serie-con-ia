@@ -148,3 +148,39 @@ Genera estas imágenes con el programa que quieras y guárdalas **con el nombre 
 ```
 2D hand-drawn cartoon prop, clean bold ink outlines, flat matte colors, simple shapes, side view, isolated on a plain flat light-grey background, even lighting, no text, no logos, no watermark, a 1970s aircraft cockpit handheld radio microphone with a coiled black cable
 ```
+
+---
+
+## AMPLIACIÓN (versión larga): fondos nuevos
+
+### 27. ⭐ `fondos/f10_cabina_pasajeros.png`: pasajeros con las luces rojas en las ventanillas
+```
+2D hand-drawn matte painted background for a vertical 9:16 animated short, simple clear shapes with clean ink outlines, flat color areas with soft painted lighting, limited palette of warm amber and deep teal, cinematic, clear separation between foreground, midground and far background, empty scene with no characters and no people, no text, no watermark, interior of a 1970s passenger airplane cabin at night seen from the aisle, rows of empty seats on both sides, small round windows on the left glowing with an eerie red light from outside, dim warm reading lights, overhead luggage bins, perspective towards the cockpit door
+```
+
+### 28. ⭐ `fondos/f11_sala_radar.png`: sala del radar militar de Torrejón (1979)
+```
+2D hand-drawn matte painted background for a vertical 9:16 animated short, simple clear shapes with clean ink outlines, flat color areas with soft painted lighting, limited palette of warm amber and deep teal, cinematic, clear separation between foreground, midground and far background, empty scene with no characters and no people, no text, no watermark, dark 1970s military air defense radar control room, several large round green radar screens on grey consoles, a big plotting map of Spain on the wall, a red telephone, dim overhead lamps, cold teal light with warm amber accents, empty chairs
+```
+
+### 29. ⭐ `fondos/f12_cabina_caza.png`: cabina del caza por dentro, mirando hacia delante
+```
+2D hand-drawn matte painted background for a vertical 9:16 animated short, simple clear shapes with clean ink outlines, flat color areas with soft painted lighting, limited palette of warm amber and deep teal, cinematic, clear separation between foreground, midground and far background, empty scene with no characters and no people, no text, no watermark, view from inside a 1970s fighter jet cockpit at night looking forward through the canopy, instrument panel with round dials, a head-up display glass, a red warning light on the panel, dark night sky with stars outside, a glowing red light far away in the sky
+```
+
+### 30. ⭐ `fondos/f13_refineria.png`: refinería de noche en la costa, con antorchas
+```
+2D hand-drawn matte painted background for a vertical 9:16 animated short, simple clear shapes with clean ink outlines, flat color areas with soft painted lighting, limited palette of warm amber and deep teal, cinematic, clear separation between foreground, midground and far background, empty scene with no characters and no people, no text, no watermark, coastal oil refinery at night seen from far away across a calm sea, tall flare stacks with bright orange flames, storage tanks and pipes with small lights, reflections of the flames on the water, dark mountains behind, starry sky, generic refinery with no logos
+```
+
+### 31. ○ `fondos/f14_hemiciclo.png`: hemiciclo del Congreso (genérico)
+```
+2D hand-drawn matte painted background for a vertical 9:16 animated short, simple clear shapes with clean ink outlines, flat color areas with soft painted lighting, limited palette of warm amber and deep teal, cinematic, clear separation between foreground, midground and far background, empty scene with no characters and no people, no text, no watermark, empty classic parliament hemicycle chamber, semicircular rows of red velvet seats, dark wood panels, a central speaker podium, ornate ceiling with a skylight, warm amber light, generic with no flags, no emblems and no text
+```
+
+### 32. ○ `fondos/f15_flota.png`: barcos de guerra en el Mediterráneo de noche
+```
+2D hand-drawn matte painted background for a vertical 9:16 animated short, simple clear shapes with clean ink outlines, flat color areas with soft painted lighting, limited palette of warm amber and deep teal, cinematic, clear separation between foreground, midground and far background, empty scene with no characters and no people, no text, no watermark, several grey 1970s navy warships at night on a dark calm sea, silhouettes with radar antennas and masts, small red and white navigation lights, moonlight on the water, generic ships with no flags, no numbers and no insignia
+```
+
+> El objeto "troncocónico" que vio el piloto, las alarmas, los ecos del radar y la ruta desde Salzburgo los dibujo yo en código: no hace falta referencia.
