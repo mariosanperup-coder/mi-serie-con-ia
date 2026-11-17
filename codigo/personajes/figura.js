@@ -67,7 +67,8 @@ function silla() {
 }
 
 function figura(o = {}) {
-  const vista = o.vista || 'frente', sentado = o.pose === 'sentado';
+  const espalda = o.vista === 'espalda';
+  const vista = espalda ? 'frente' : (o.vista || 'frente'), sentado = o.pose === 'sentado';
   const r = Object.assign({ torso: '#2B3A5C', mangas: null, pantalon: '#2B2B33', zapatos: '#151515', manos: '#151515', largoChaqueta: 440 }, o.ropa || {});
   const mangas = r.mangas || r.torso;
   const perfil = vista === 'perfil';
@@ -114,7 +115,7 @@ function figura(o = {}) {
   ${o.detrasCabeza || ''}
   <path d="M${perfil ? 188 : 186} 176 V${perfil ? 232 : 234} H${perfil ? 214 : 214} V176 Z" fill="#fff" stroke="${T}" stroke-width="5"/>
   <circle cx="200" cy="120" r="76" fill="#fff" stroke="${T}" stroke-width="6"/>
-  ${cara(vista, o.cara || 'serio')}
+  ${espalda ? '' : cara(vista, o.cara || 'serio')}
   ${o.cabeza || ''}
   ${o.delante || ''}
   </svg>`;

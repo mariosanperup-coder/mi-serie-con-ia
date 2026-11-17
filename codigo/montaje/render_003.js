@@ -68,15 +68,16 @@ function multitud(n, semilla, { y0 = 1480, y1 = 1900, x0 = -40, x1 = 1120, hueco
     const y = y0 + (y1 - y0) * Math.pow(rnd(), 0.8), x = x0 + (x1 - x0) * rnd();
     if (hueco && Math.abs(x - hueco[0]) < hueco[2] && Math.abs(y - hueco[1]) < hueco[2] * 0.5) continue;
     // Zonas prohibidas: el banco de piedra (y la gente justo detrás, que quedaría encima) y las rocas de las esquinas.
-    if (x < 600 && y > 1540 && y < 1900) continue;
+    if (x > 20 && x < 540 && y > 1592 && y < 1900) continue;
     if (x < 340 && y > 1730) continue;
     if (x > 740 && y > 1840) continue;
-    gente.push([x, y, Math.floor(rnd() * 4), COLORES[Math.floor(rnd() * COLORES.length)], rnd() < 0.5]);
+    const v = rnd(); gente.push([x, y, Math.floor(rnd() * 4), COLORES[Math.floor(rnd() * COLORES.length)], v < 0.5 ? 'espalda' : v < 0.85 ? 'perfil' : 'frente', x > 600]);
   }
   gente.sort((p, q) => p[1] - q[1]);
-  return gente.map(([x, y, tipo, color, espejo]) => {
+  return gente.map(([x, y, tipo, color, vista, mirarIzq]) => {
+    const espejo = vista === 'perfil' ? mirarIzq : false;
     const sc = 0.17 + (y - y0) / (y1 - y0) * 0.17;
-    let svg = turista(tipo).replace(/#4E7A3E|#C8483E|#2E5AA0|#8A6AA0/g, color);
+    let svg = turista(tipo, vista).replace(/#4E7A3E|#C8483E|#2E5AA0|#8A6AA0/g, color);
     const fig = capa(svg, x - 200 * sc, y - 712 * sc, sc);
     return sombra(x, y, 46 * sc / 0.27) + (espejo ? `<g transform="translate(${2 * x} 0) scale(-1 1)">${fig}</g>` : fig);
   }).join('');
@@ -116,7 +117,7 @@ const ESCENAS = {
     ${movil(250, 520, -8, 'ECCE MONO', 0)}${movil(800, 470, 7, 'MONKEY CHRIST', 1)}${movil(540, 980, 0, '¡VIRAL!', 2)}${movil(240, 1430, 6, 'BBC NEWS', 3)}${movil(830, 1440, -6, 'OMG 😂', 4)}
     <g id="e08sello" opacity="0" transform="translate(540 960) rotate(-8)"><rect x="-420" y="-110" width="840" height="220" rx="14" fill="#F2E6CF"/><rect x="-420" y="-110" width="840" height="220" rx="14" fill="none" stroke="#C0392B" stroke-width="16"/>
       <text x="0" y="50" text-anchor="middle" font-family="Inter" font-weight="900" font-size="150" fill="#C0392B">ECCE MONO</text></g>`,
-  e09: `<g id="e09zoom">${fondo(santuario())}${multitud(150, 7)}</g>
+  e09: `<g id="e09zoom">${fondo(santuario())}${multitud(190, 7)}</g>
     <rect id="e09flash" width="1080" height="1920" fill="#fff" opacity="0"/>
     <g id="e09cont" opacity="0"><rect x="200" y="240" width="680" height="210" rx="14" fill="#0B0E13" opacity="0.85"/>
       <text id="e09num" x="540" y="370" text-anchor="middle" font-family="Inter" font-weight="900" font-size="110" fill="#FFD34D">0</text><text x="540" y="420" text-anchor="middle" font-family="JetBrains Mono" font-weight="800" font-size="34" fill="#F2E6CF">VISITANTES</text></g>
@@ -127,7 +128,7 @@ const ESCENAS = {
       <text x="300" y="1170" text-anchor="middle" font-family="JetBrains Mono" font-weight="800" font-size="34" fill="#0B0E13">ENTRADA</text>
       <text x="300" y="1236" text-anchor="middle" font-family="Inter" font-weight="900" font-size="64" fill="#C0392B">2 €</text></g>
     ${sombra(780, 1660, 100)}${capa(luciaFrente({ cara: 'explicando' }), 650, 1000, 0.92, '', 'lucia')}</g>`,
-  e11: `<g id="e11zoom">${fondo(santuario())}${multitud(130, 3, { hueco: [560, 1830, 170] })}
+  e11: `<g id="e11zoom">${fondo(santuario())}${multitud(170, 3, { hueco: [560, 1830, 170] })}
     <g id="e11teo">${teoMini('chulo', 560, 1860)}</g></g>`,
   e12: `<g id="e12zoom">${fondo(archivoSinMesa)}${capa(teoFrente({ cara: 'chulo' }), 290, 760, 1.25, '', 'teo')}${mesa()}<g transform="translate(560 1505) scale(0.55 0.22)">${capa(O.expediente(), 0, 0, 1)}</g></g>`,
   e13: `<rect width="1080" height="1920" fill="#07090D"/><circle cx="540" cy="760" r="520" fill="url(#hFocoG)"/>
