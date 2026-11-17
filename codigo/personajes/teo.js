@@ -59,7 +59,7 @@ function farol(x, y, encendido = true) {
   </g>`;
 }
 
-function teoFrente({ cara: expr = 'serio', farolEncendido = true } = {}) {
+function teoFrente({ cara: expr = 'serio', farolEncendido = true, conFarol = true } = {}) {
   const t = C.tinta;
   return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 760" width="400" height="760">
   <g stroke-linecap="round" stroke-linejoin="round">
@@ -94,7 +94,7 @@ function teoFrente({ cara: expr = 'serio', farolEncendido = true } = {}) {
     <!-- guantes -->
     <path d="M102 404 Q96 432 112 440 Q132 442 132 420 L130 404 Z" fill="${t}"/>
     <path d="M270 404 Q268 432 284 440 Q304 438 298 404 Z" fill="${t}"/>
-    ${farol(286, 452, farolEncendido)}
+    ${conFarol ? farol(286, 452, farolEncendido) : ''}
     <!-- bufanda: vueltas al cuello y caída -->
     <path d="M206 236 L238 238 L240 400 L208 400 Z" fill="${C.bufanda}" stroke="${t}" stroke-width="4"/>
     <path d="M214 244 V398 M224 244 V398 M232 244 V398" stroke="${C.bufandaSombra}" stroke-width="3"/>
