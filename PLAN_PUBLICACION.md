@@ -1,11 +1,10 @@
 # Plan de publicación: Expediente Vela (solo YouTube)
 
 ## Reglas
-- **2 vídeos al día desde el arranque**, a hora fija (hora de España), programados desde YouTube Studio → *Programar*:
-  - **Lunes a viernes:** **14:00** (curiosidad 🧠, hora de comer) y **21:00** (miedo/misterio 👻, después de cenar).
-  - **Sábados y domingos:** **12:30** y **20:30** (el fin de semana se come y se cena antes de mirar el móvil, y por la noche hay más competencia).
+- **1 vídeo al día**, a hora fija (hora de España), programado desde YouTube Studio → *Programar*:
+  - **Lunes a viernes: 21:00** · **Sábados y domingos: 20:30**.
 - **Producción:** un vídeo al día (para no gastar de golpe los créditos de ElevenLabs).
-- **Colchón:** no se publica nada que no esté terminado. Siempre debe haber **al menos 5 vídeos listos** por delante. Si baja de 3, se vuelve a 1 al día hasta recuperar.
+- **Colchón:** no se publica nada que no esté terminado. Lo ideal es ir 2 o 3 vídeos por delante.
 - **Alternar:** miedo → curiosidad → miedo… para no cansar.
 - **Después de publicar (primera hora):** fijar el comentario con la pregunta y responder a los primeros comentarios. Eso ayuda a que YouTube lo empuje.
 - **Cada domingo:** mirar en YouTube Studio qué vídeo retuvo más (porcentaje visto y "deslizar vs ver") y hacer más de ese tipo.
@@ -21,18 +20,18 @@ Empezamos el **lunes 23 de noviembre** si para entonces hay 5 vídeos listos (el
 
 | Fecha | Hora | Episodio | Tipo |
 |---|---|---|---|
-| Lun 23 nov | 20:30 | 001 · El caso Manises | 👻 |
-| Mar 24 nov | 20:30 | Las caras de Bélmez | 👻 |
-| Mié 25 nov | 20:30 | El Ecce Homo de Borja | 🧠 |
-| Jue 26 nov | 20:30 | El hombre pez de Liérganes | 👻 |
-| Vie 27 nov | 20:30 | El Dioni | 🧠 |
+| Lun 23 nov | 21:00 | 001 · El caso Manises | 👻 |
+| Mar 24 nov | 21:00 | Las caras de Bélmez | 👻 |
+| Mié 25 nov | 21:00 | El Ecce Homo de Borja | 🧠 |
+| Jue 26 nov | 21:00 | El hombre pez de Liérganes | 👻 |
+| Vie 27 nov | 21:00 | El Dioni | 🧠 |
 | Sáb 28 nov | 20:30 | La campana de Velilla | 👻 |
 | Dom 29 nov | 20:30 | Altamira y la niña a la que nadie creyó | 🧠 |
-| Lun 30 nov | 20:30 | Canfranc y el oro nazi | 👻 |
-| Mar 1 dic | 20:30 | Ummo: las cartas de "extraterrestres" | 🧠 |
-| Mié 2 dic | 20:30 | Ochate, el pueblo maldito | 👻 |
-| Jue 3 dic | 20:30 | El tesoro del yate Vita | 🧠 |
-| Vie 4 dic | 20:30 | El Palacio de Linares | 👻 |
+| Lun 30 nov | 21:00 | Canfranc y el oro nazi | 👻 |
+| Mar 1 dic | 21:00 | Ummo: las cartas de "extraterrestres" | 🧠 |
+| Mié 2 dic | 21:00 | Ochate, el pueblo maldito | 👻 |
+| Jue 3 dic | 21:00 | El tesoro del yate Vita | 🧠 |
+| Vie 4 dic | 21:00 | El Palacio de Linares | 👻 |
 | Sáb 5 dic | 20:30 | La torre inclinada de Zaragoza | 🧠 |
 | Dom 6 dic | 20:30 | (nueva historia, la propongo en la siguiente tanda) | 👻 |
 
