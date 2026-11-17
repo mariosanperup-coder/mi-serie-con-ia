@@ -108,6 +108,7 @@ function figura(o = {}) {
   ${perfil ? '' : dibBrazo(hI, bI) + mano(bI)}
   ${dibBrazo(hD, bD)}${mano(bD)}
   ${o.detrasCabeza || ''}
+  <path d="M${perfil ? 188 : 186} 176 V${perfil ? 232 : 234} H${perfil ? 214 : 214} V176 Z" fill="#fff" stroke="${T}" stroke-width="5"/>
   <circle cx="200" cy="120" r="76" fill="#fff" stroke="${T}" stroke-width="6"/>
   ${cara(vista, o.cara || 'serio')}
   ${o.cabeza || ''}

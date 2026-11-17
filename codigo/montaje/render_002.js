@@ -44,13 +44,18 @@ const T = LT.clave;
 const archivoSinMesa = archivo({ conMesa: false }), mesa = () => `<g>${aislar(archivo.mesa())}</g>`;
 const cocina = () => F('002/b01_cocina')(), pueblo = () => F('002/b02_pueblo')();
 // Cara en el suelo de cemento (perspectiva aplastada). id para animar su opacidad.
-const caraSuelo = (id, x, y, s) => `<g id="${id}" opacity="0" transform="translate(${x} ${y}) scale(${s} ${s * 0.55})" filter="url(#borroso)">
-  <ellipse cx="0" cy="0" rx="80" ry="105" fill="#3A342C" opacity="0.25"/>
-  <g fill="none" stroke="#2A251F" stroke-width="9" stroke-linecap="round" opacity="0.85">
-    <path d="M-48 -34 q14 -14 30 0 M18 -34 q14 -14 30 0"/><path d="M0 -6 q-6 26 4 34"/><path d="M-30 46 q30 18 60 0"/></g>
-  <circle cx="-33" cy="-14" r="11" fill="#2A251F"/><circle cx="33" cy="-14" r="11" fill="#2A251F"/></g>`;
+// Cara en el suelo de cemento: mancha irregular de humedad con rasgos (ojos hundidos, nariz, boca), deformada con ruido.
+const caraSuelo = (id, x, y, s) => `<g id="${id}" opacity="0" transform="translate(${x} ${y}) scale(${s} ${s * 0.55})" filter="url(#mancha)">
+  <ellipse cx="0" cy="6" rx="92" ry="118" fill="#4A433A" opacity="0.32"/>
+  <ellipse cx="0" cy="-2" rx="70" ry="92" fill="#3E372F" opacity="0.25"/>
+  <ellipse cx="-34" cy="-28" rx="26" ry="10" fill="#2E2822" opacity="0.45"/><ellipse cx="34" cy="-27" rx="24" ry="9" fill="#2E2822" opacity="0.45"/>
+  <ellipse cx="-34" cy="-12" rx="17" ry="12" fill="#211C17" opacity="0.85"/><ellipse cx="34" cy="-11" rx="16" ry="12" fill="#211C17" opacity="0.85"/>
+  <path d="M-6 -4 Q-14 22 -4 36 Q8 38 10 28 Q4 14 4 -2 Z" fill="#2E2822" opacity="0.6"/>
+  <path d="M-36 54 Q0 66 36 52 Q20 76 0 76 Q-22 76 -36 54 Z" fill="#211C17" opacity="0.75"/>
+  <ellipse cx="0" cy="100" rx="40" ry="14" fill="#3E372F" opacity="0.35"/></g>`;
 const etiqueta = (id, txt, x, y) => `<g id="${id}" opacity="0"><rect x="${x - txt.length * 17 - 24}" y="${y - 50}" width="${txt.length * 34 + 48}" height="72" rx="6" fill="#0B0E13" opacity="0.85"/>
   <text x="${x}" y="${y}" text-anchor="middle" font-family="JetBrains Mono" font-weight="800" font-size="46" fill="#F2E6CF">${txt}</text></g>`;
+const sombra = (x, y, rx) => `<ellipse cx="${x}" cy="${y}" rx="${rx}" ry="${rx * 0.16}" fill="#000" opacity="0.35"/>`;
 const sello = (id, txt, x, y, rot) => `<g id="${id}" opacity="0" transform="translate(${x} ${y}) rotate(${rot})"><rect x="${-txt.length * 26 - 30}" y="-58" width="${txt.length * 52 + 60}" height="116" rx="10" fill="#F2E6CF" opacity="0.9"/>
   <rect x="${-txt.length * 26 - 30}" y="-58" width="${txt.length * 52 + 60}" height="116" rx="10" fill="none" stroke="#C0392B" stroke-width="12"/>
   <text x="0" y="24" text-anchor="middle" font-family="JetBrains Mono" font-weight="800" font-size="76" fill="#C0392B">${txt}</text></g>`;
@@ -69,35 +74,35 @@ const periodico = id => `<g id="${id}" opacity="0"><g transform="rotate(-5 540 7
   <g transform="translate(390 865) scale(1.1)" fill="none" stroke="#2A2620" stroke-width="7"><path d="M-40 -28 q12 -12 26 0 M14 -28 q12 -12 26 0 M-26 40 q26 14 52 0"/><circle cx="-27" cy="-10" r="8" fill="#2A2620"/><circle cx="27" cy="-10" r="8" fill="#2A2620"/></g>
   ${[0, 1, 2, 3, 4, 5, 6, 7].map(i => `<path d="M570 ${760 + i * 30} H${840 - (i % 3) * 40}" stroke="#7A766E" stroke-width="8"/>`).join('')}
   ${[0, 1, 2, 3].map(i => `<path d="M240 ${1030 + i * 28} H${840 - (i % 2) * 120}" stroke="#7A766E" stroke-width="8"/>`).join('')}</g></g>`;
-const sobreAzucar = id => `<g id="${id}" opacity="0" transform="translate(760 1400) rotate(8)"><rect x="-120" y="-70" width="240" height="140" rx="8" fill="#F4F0E6" stroke="#0B0E13" stroke-width="6"/>
+const sobreAzucar = id => `<g id="${id}" opacity="0" transform="translate(260 1452) rotate(-8) scale(0.4)"><rect x="-120" y="-70" width="240" height="140" rx="8" fill="#F4F0E6" stroke="#0B0E13" stroke-width="6"/>
   <path d="M-120 -40 H120" stroke="#C0392B" stroke-width="10"/><text x="0" y="40" text-anchor="middle" font-family="Inter" font-weight="900" font-size="46" fill="#C0392B">AZÚCAR</text></g>`;
 const curioso = (i) => figura({ vista: 'frente', cara: ['sorpresa', 'serio', 'preocupado', 'sorpresa', 'serio'][i % 5],
   ropa: { torso: ['#5A6A8A', '#8A4A3A', '#4A6A4A', '#7A6A4A', '#3A3A4A'][i % 5], pantalon: '#2E2E34', manos: '#151515', falda: i % 2 ? '#3A2A30' : null, largoChaqueta: 440 } });
 
 const ESCENAS = {
-  e01: `<g id="e01zoom">${fondo(cocina())}${caraSuelo('e01cara', 560, 1640, 1.6)}
-    <g transform="translate(1100 0) scale(-1 1)">${capa(maria.cocinando(), 560, 720, 1.25, 'e01maria')}</g>
-    <g id="e01mariaS" style="display:none">${capa(maria.susto(), 470, 720, 1.25)}</g></g>`,
-  e02: `<g id="e02zoom">${fondo(pueblo())}<g id="e02teo"><ellipse cx="740" cy="1712" rx="130" ry="16" fill="#000" opacity="0.4"/>
-    ${capa(teoFrente({ cara: 'chulo' }), 540, 1000, 1, '', 'teo')}${capa(tinta({ pose: 'tranquilo' }), 762, 1100, 0.34)}</g></g>${rotuloCanal('e02rot')}`,
+  e01: `<g id="e01zoom">${fondo(cocina())}${caraSuelo('e01cara', 600, 1660, 1.5)}${sombra(520, 1420, 90)}
+    <g transform="translate(1100 0) scale(-1 1)"><g id="e01maria">${capa(maria.cocinando('serio'), 390, 755, 0.95)}</g>
+      <g id="e01mariaS" style="display:none">${capa(maria.cocinando('sorpresa'), 390, 755, 0.95)}</g></g></g>`,
+  e02: `<g id="e02zoom">${fondo(pueblo())}<g id="e02teo">${sombra(760, 1760, 70)}
+    ${capa(teoFrente({ cara: 'chulo' }), 660, 1404, 0.5, '', 'teo')}${capa(tinta({ pose: 'tranquilo' }), 771, 1454, 0.17)}</g></g>${rotuloCanal('e02rot')}`,
   e03: `<g id="e03a"><g id="e03zoomA">${fondo(pueblo())}</g>${etiqueta('e03rot', 'BÉLMEZ DE LA MORALEDA', 540, 260)}${etiqueta('e03rot2', 'JAÉN · 1971', 540, 360)}</g>
-    <g id="e03b" style="display:none"><g id="e03zoomB">${fondo(cocina())}${caraSuelo('e03cara', 560, 1640, 1.6)}</g></g>`,
-  e04: `<g id="e04zoom">${fondo(cocina())}${caraSuelo('e04cara', 560, 1640, 1.6)}
-    <ellipse id="e04yeso" cx="560" cy="1640" rx="220" ry="90" fill="#EDE7DA" opacity="0"/>
-    <g id="e04alb">${capa(albanil.raspando(), 190, 1000, 1.05)}</g></g><rect id="e04fundido" width="1080" height="1920" fill="#000" opacity="0"/>
+    <g id="e03b" style="display:none"><g id="e03zoomB">${fondo(cocina())}${caraSuelo('e03cara', 600, 1660, 1.5)}</g></g>`,
+  e04: `<g id="e04zoom">${fondo(cocina())}${caraSuelo('e04cara', 600, 1660, 1.5)}
+    <ellipse id="e04yeso" cx="600" cy="1660" rx="200" ry="80" fill="#EDE7DA" opacity="0"/>
+    <g id="e04alb">${sombra(420, 1730, 130)}${capa(albanil.raspando(), 230, 1010, 1.05)}</g></g><rect id="e04fundido" width="1080" height="1920" fill="#000" opacity="0"/>
     ${etiqueta('e04dias', 'DÍAS DESPUÉS…', 540, 300)}`,
   e05: `<g id="e05a">${fondo(F('002/b03_pasillo')())}${caraSuelo('e05c1', 560, 1180, 0.7)}${caraSuelo('e05c2', 420, 1450, 1.0)}${caraSuelo('e05c3', 700, 1700, 1.3)}</g>
-    <g id="e05b" style="display:none">${fondo(pueblo())}${[0, 1, 2, 3, 4].map(i => capa(curioso(i), 330 + i * 130, 1080 + i * 40, 0.62 + i * 0.04)).join('')}</g>`,
+    <g id="e05b" style="display:none">${fondo(pueblo())}${[4, 3, 2, 1, 0].map(i => { const sc = 0.4 + i * 0.05, x = 360 + i * 120, y = 1660 + i * 50; return sombra(x, y, 60 * sc / 0.4) + capa(curioso(i), x - 200 * sc, y - 712 * sc, sc); }).join('')}</g>`,
   e06: `<g id="e06fondo">${fondo(F('002/b03_pasillo')())}</g><rect width="1080" height="1920" fill="#000" opacity="0.35"/>
-    ${caraSuelo('e06cara', 540, 1700, 1.6)}
-    <g id="e06tinta"><g id="e06a">${capa(tinta({ pose: 'tranquilo' }), 310, 700, 1.5)}</g><g id="e06b" style="display:none">${capa(tinta({ pose: 'desconfia' }), 310, 700, 1.5)}</g>
-      <g id="e06c" style="display:none">${capa(tinta({ pose: 'susto' }), 310, 700, 1.5)}</g></g>`,
+    ${caraSuelo('e06cara', 620, 1720, 1.4)}${sombra(320, 1650, 50)}
+    <g id="e06tinta"><g id="e06a">${capa(tinta({ pose: 'tranquilo' }), 230, 1437, 0.6)}</g><g id="e06b" style="display:none">${capa(tinta({ pose: 'desconfia' }), 230, 1437, 0.6)}</g>
+      <g id="e06c" style="display:none">${capa(tinta({ pose: 'susto' }), 230, 1437, 0.6)}</g></g>`,
   e07: `${fondo(archivoSinMesa)}<g id="e07lucia"><g id="e07F">${capa(luciaFrente({ cara: 'esceptica' }), 290, 760, 1.25, '', 'lucia')}</g>
       <g id="e07P" style="display:none">${capa(luciaPerfil(), 290, 760, 1.25, '', 'lucia')}</g></g>${mesa()}`,
   e08: `${fondo(archivoSinMesa)}<g id="e08teo"><g id="e08F">${capa(teoFrente({ cara: 'chulo' }), 290, 760, 1.25, '', 'teo')}</g>
       <g id="e08P" style="display:none" transform="translate(1080 0) scale(-1 1)">${capa(teoPerfil(), 290, 760, 1.25, '', 'teo')}</g></g>${mesa()}${periodico('e08diario')}`,
-  e09: `${fondo(F('002/b04_laboratorio')())}${capa(luciaFrente({ cara: 'explicando' }), 560, 900, 1.15, '', 'lucia')}${sobreAzucar('e09sobre')}${etiqueta('e09rot', 'CSIC', 260, 300)}`,
-  e10: `<g id="e10zoom">${fondo(cocina())}${caraSuelo('e10cara', 560, 1640, 1.6)}</g><rect width="1080" height="1920" fill="#000" opacity="0.25"/>
+  e09: `${fondo(F('002/b04_laboratorio')())}${sombra(790, 1719, 110)}${capa(luciaFrente({ cara: 'explicando' }), 560, 900, 1.15, '', 'lucia')}${sobreAzucar('e09sobre')}${etiqueta('e09rot', 'CSIC', 260, 300)}`,
+  e10: `<g id="e10zoom">${fondo(cocina())}${caraSuelo('e10cara', 600, 1660, 1.5)}</g><rect width="1080" height="1920" fill="#000" opacity="0.25"/>
     ${sello('e10s1', 'PARANORMAL', 540, 520, -8)}${sello('e10s2', 'FRAUDE', 540, 820, 6)}${sello('e10s3', 'SIN PINTURA', 540, 1120, -4)}${etiqueta('e10ano', '2014', 540, 1300)}`,
   e11: `<g id="e11zoom">${fondo(pueblo())}</g><rect id="e11noche" width="1080" height="1920" fill="#0A1A2E" opacity="0"/>
     <circle id="e11luz" cx="245" cy="1450" r="160" fill="url(#hFocoG)" opacity="0"/>`,
@@ -113,7 +118,7 @@ const html = `<!doctype html><html><head><style>body{margin:0;background:#000} .
 <svg id="lienzo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}" width="${W}" height="${H}">
 <defs><radialGradient id="hRojoG"><stop offset="0" stop-color="#FF4A3A" stop-opacity="0.85"/><stop offset="1" stop-color="#FF4A3A" stop-opacity="0"/></radialGradient>
 <radialGradient id="hFocoG"><stop offset="0" stop-color="#FFC066" stop-opacity="0.35"/><stop offset="1" stop-color="#FFC066" stop-opacity="0"/></radialGradient>
-<filter id="borroso"><feGaussianBlur stdDeviation="2.5"/></filter><radialGradient id="vineta" cx="0.5" cy="0.5" r="0.75"><stop offset="0.55" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity="0.55"/></radialGradient></defs>
+<filter id="mancha" x="-30%" y="-30%" width="160%" height="160%"><feTurbulence type="fractalNoise" baseFrequency="0.045" numOctaves="2" seed="11" result="r"/><feDisplacementMap in="SourceGraphic" in2="r" scale="16"/><feGaussianBlur stdDeviation="3"/></filter><radialGradient id="vineta" cx="0.5" cy="0.5" r="0.75"><stop offset="0.55" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity="0.55"/></radialGradient></defs>
 ${Object.entries(ESCENAS).map(([id, s]) => `<g id="${id}" style="display:none">${s}</g>`).join('\n')}
 <rect width="${W}" height="${H}" fill="url(#vineta)" pointer-events="none"/>
 <text id="sub" x="540" y="1420" text-anchor="middle" font-family="Inter" font-weight="900" font-size="84"></text>
@@ -177,8 +182,7 @@ function vida(t, escena) {
     let k = 0; for (const [id, kk] of ANDA) if ($(id) && $(id).contains(pi)) k = kk;
     let ang;
     if (k > 0) ang = lado * 28 * k * Math.sin(t * 9);
-    else if (pi.classList.contains('sentada')) ang = -4 * Math.max(0, Math.sin(t * 7 + i)) ** 4;
-    else ang = lado * 2.2 * Math.sin(t * 1.3 + i * 0.7) + 2.5 * Math.max(0, Math.sin(t * 0.8 + i)) ** 6 * lado;
+    else ang = 0; // quietos: sin balanceo
     pi.setAttribute('transform', \`rotate(\${ang.toFixed(2)} \${cx} \${cy})\`);
   });
   raiz.querySelectorAll('.brazo').forEach((br, i) => {
@@ -196,14 +200,14 @@ function render(t) {
   op('negro', t < 0.4 ? 1 - t / 0.4 : Math.max(0, 0.6 - d * 4));
   const resp = 1 + 0.008 * Math.sin(t * 2.4); // respiración
   switch (e.id) {
-    case 'e01': { zoom('e01zoom', 1 + 0.12 * suave(prog(t, T.aparece - 1, e.fin)), 560, 1500);
+    case 'e01': { zoom('e01zoom', 1 + 0.15 * suave(prog(t, T.aparece - 1, e.fin)), 600, 1560);
       const k = prog(t, T.aparece - 0.6, T.aparece + 0.8); op('e01cara', suave(k));
       const sust = t >= T.aparece + 0.4; ver('e01maria', !sust); ver('e01mariaS', sust); break; }
-    case 'e02': zoom('e02zoom', 1 + 0.1 * suave(p), 740, 1300); zoom('e02teo', resp, 740, 1712);
+    case 'e02': $('e02zoom').setAttribute('transform', \`translate(540 1150) scale(\${1.75 + 0.1 * suave(p)}) translate(-700 -1560)\`); zoom('e02teo', resp, 760, 1760);
       op('e02rot', prog(d, 0.15, 0.5)); $('e02rot').setAttribute('transform', \`translate(540 300) scale(\${1.25 - 0.25 * suave(prog(d, 0.15, 0.45))})\`); break;
     case 'e03': { const b = t >= T.cemento; ver('e03a', !b); ver('e03b', b);
       zoom('e03zoomA', 1 + 0.12 * prog(t, e.ini, T.cemento), 680, 700); op('e03rot', prog(d, 0.2, 0.6)); op('e03rot2', prog(d, 0.6, 1));
-      $('e03zoomB').setAttribute('transform', \`translate(540 960) scale(\${3.15 + 0.3 * suave(prog(t, T.cemento, e.fin))}) translate(-560 -1615)\`); op('e03cara', 0.6 + 0.4 * prog(t, T.cemento, T.cemento + 1)); break; }
+      $('e03zoomB').setAttribute('transform', \`translate(540 960) scale(\${3.15 + 0.3 * suave(prog(t, T.cemento, e.fin))}) translate(-600 -1612)\`); op('e03cara', 0.6 + 0.4 * prog(t, T.cemento, T.cemento + 1)); break; }
     case 'e04': { zoom('e04zoom', 1.15, 560, 1500);
       const rasp = prog(t, e.ini, T.resuelto); op('e04cara', t < T.resuelto ? 1 - 0.8 * rasp : prog(t, T.volvio - 0.6, T.volvio + 0.8));
       op('e04yeso', t < T.resuelto ? 0.9 * suave(prog(t, e.ini + 1.5, T.resuelto)) : Math.max(0, 0.9 - prog(t, T.volvio - 0.8, T.volvio + 0.6)));
@@ -214,15 +218,15 @@ function render(t) {
       if (b) $('e05b').setAttribute('transform', \`translate(540 1300) scale(\${1 + 0.06 * prog(t, T.noticia, e.fin)}) translate(-540 -1300)\`); break; }
     case 'e06': { const fase = d < 0.45 ? 'a' : d < 0.85 ? 'b' : 'c'; ver('e06a', fase === 'a'); ver('e06b', fase === 'b'); ver('e06c', fase === 'c');
       op('e06cara', prog(d, 0.3, 0.8)); const tiembla = fase === 'c' ? 10 * Math.sin(d * 80) * Math.max(0, 1 - (d - 0.85) * 1.2) : 0;
-      $('e06tinta').setAttribute('transform', \`translate(\${tiembla} 0)\`); break; }
+      $('e06tinta').setAttribute('transform', \`translate(\${tiembla} 0)\`); $('e06').setAttribute('transform', \`translate(540 1550) scale(\${1.5 + 0.1 * d}) translate(-480 -1600)\`); break; }
     case 'e07': { const an = d < 0.9 ? 1 : 0; andar('e07lucia', an); ver('e07P', an); ver('e07F', !an); mueve('e07lucia', -620 * (1 - suave(prog(d, 0, 0.9))), -paso(t) * an); break; }
     case 'e08': { const an = d < 0.9 ? 1 : 0; andar('e08teo', an); ver('e08P', an); ver('e08F', !an);
       $('e08teo').setAttribute('transform', \`translate(\${700 * (1 - suave(prog(d, 0, 0.9)))} \${-paso(t) * an}) translate(540 1650) scale(\${resp}) translate(-540 -1650)\`);
       const k = suave(prog(t, T.periodico - 0.2, T.periodico + 0.3)); op('e08diario', k);
       $('e08diario').setAttribute('transform', \`translate(540 760) scale(\${0.6 + 0.4 * k}) rotate(\${(1 - k) * 25}) translate(-540 -760)\`); break; }
     case 'e09': op('e09rot', prog(d, 0.2, 0.6)); { const k = suave(prog(t, T.sobre - 0.2, T.sobre + 0.25)); op('e09sobre', k);
-      $('e09sobre').setAttribute('transform', \`translate(190 \${1380 - 200 * (1 - k)}) rotate(-8)\`); } break;
-    case 'e10': $('e10zoom').setAttribute('transform', \`translate(540 960) scale(\${3.15 + 0.3 * suave(p)}) translate(-560 -1615)\`);
+      $('e09sobre').setAttribute('transform', \`translate(260 \${1452 - 120 * (1 - k)}) rotate(-8) scale(0.4)\`); } break;
+    case 'e10': $('e10zoom').setAttribute('transform', \`translate(540 960) scale(\${3.15 + 0.3 * suave(p)}) translate(-600 -1612)\`);
       [['e10s1', T.parapsicologo, -8, 520], ['e10s2', T.esceptico, 6, 820], ['e10s3', T.catorce, -4, 1120]].forEach(([id, t0, r, y]) => {
         const s = prog(t, t0, t0 + 0.12); op(id, s); $(id).setAttribute('transform', \`translate(540 \${y}) rotate(\${r}) scale(\${(1.6 - 0.6 * suave(s)) * 0.8})\`); });
       op('e10ano', prog(t, T.catorce - 0.6, T.catorce - 0.3)); op('e10cara', 0.9); break;

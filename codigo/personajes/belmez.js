@@ -6,7 +6,7 @@ const mono = (vista) => vista === 'perfil'
   : `<path d="M126 110 Q120 40 200 40 Q280 40 274 110 Q250 74 200 72 Q150 74 126 110 Z" fill="#3A2418" stroke="${T}" stroke-width="4"/><circle cx="128" cy="120" r="28" fill="#3A2418" stroke="${T}" stroke-width="4"/>`;
 const delantal = (vista) => vista === 'perfil'
   ? `<path d="M226 300 L246 300 L258 520 L232 520 Z" fill="${DELANTAL}" stroke="${T}" stroke-width="4"/><path d="M166 300 H240" stroke="${DELANTAL}" stroke-width="10"/>`
-  : `<path d="M156 300 H244 L262 520 H138 Z" fill="${DELANTAL}" stroke="${T}" stroke-width="4"/><path d="M140 300 H260" stroke="${DELANTAL}" stroke-width="10"/><path d="M180 228 L200 252 L220 228" fill="none" stroke="#fff" stroke-width="5"/>`;
+  : `<path d="M176 226 Q200 246 224 226" fill="none" stroke="#fff" stroke-width="4"/><path d="M156 300 H244 L262 520 H138 Z" fill="${DELANTAL}" stroke="${T}" stroke-width="4"/><path d="M140 300 H260" stroke="${DELANTAL}" stroke-width="10"/><path d="M180 228 L200 252 L220 228" fill="none" stroke="#fff" stroke-width="5"/>`;
 const ropaMaria = { torso: NEGRO, pantalon: NEGRO, zapatos: '#2A2A2A', manos: '#fff', falda: NEGRO, largoChaqueta: 440 };
 const cuchara = (x, y) => `<path d="M${x} ${y} L${x + 30} ${y - 120}" stroke="#7A4E2C" stroke-width="10" stroke-linecap="round"/><ellipse cx="${x + 32}" cy="${y - 128}" rx="10" ry="16" fill="#7A4E2C"/>`;
 
