@@ -1,55 +1,121 @@
-// Pasillo de la cabina de pasajeros de noche, con luz roja en las ventanillas. 1080 x 1920.
-// pasajeros: true dibuja cabezas de pasajeros asomando por los asientos.
-const { PALETA: P, halo } = require('./comun');
+// Cabina de pasajeros de noche, en perspectiva cónica (punto de fuga en la puerta de la cabina de mando).
+// Todo se define en coordenadas "reales" (x, y en el plano cercano, z = profundidad) y se proyecta.
+// pasajeros: true sienta pasajeros (vistos de espaldas) en algunos asientos.
+const { halo } = require('./comun');
+const T = '#0B0E13';
+const VP = [700, 760];
+const pr = (x, y, z) => [VP[0] + (x - VP[0]) / z, VP[1] + (y - VP[1]) / z];
+const poli = (pts, fill, extra = '') => `<path d="M${pts.map(([x, y, z]) => pr(x, y, z).map(v => v.toFixed(1)).join(' ')).join(' L')} Z" fill="${fill}" ${extra}/>`;
+// Oscurece un color según la profundidad (niebla cálida hacia el fondo).
+function niebla(hex, z) {
+  const k = Math.min(0.75, (z - 1) * 0.11), c = [1, 3, 5].map(i => parseInt(hex.slice(i, i + 2), 16)), f = [24, 20, 18];
+  return '#' + c.map((v, i) => Math.round(v * (1 - k) + f[i] * k).toString(16).padStart(2, '0')).join('');
+}
+
+// Medidas (plano cercano)
+const PARED_I = -260, PARED_D = 1700, TECHO = -500, SUELO = 2400, FONDO = 7.2;
+const PASILLO = [420, 980];
+const RESPALDO_ARRIBA = 1060, FUNDA = [1090, 1300], PROF_ASIENTO = 0.32;
+const BLOQUE_I = [PARED_I + 30, 390], BLOQUE_D = [1010, PARED_D - 30];
+const FILAS = Array.from({ length: 8 }, (_, k) => 1.8 + k * 0.68);
+
+function asiento(x1, x2, z, { ladoPasillo = null } = {}) {
+  const s = 1 / z, [a, b] = pr(x1, RESPALDO_ARRIBA, z), [c, d] = pr(x2, SUELO, z), rad = 50 * s;
+  const col = niebla('#24474A', z), funda = niebla('#CDB88E', z), lado = niebla('#17302F', z), brazo = niebla('#8A5A34', z);
+  let g = '';
+  // Lateral visible desde el pasillo
+  if (ladoPasillo === 'derecha') g += poli([[x2, RESPALDO_ARRIBA + 30, z], [x2, RESPALDO_ARRIBA + 60, z + PROF_ASIENTO], [x2, SUELO, z + PROF_ASIENTO], [x2, SUELO, z]], lado, `stroke="${T}" stroke-width="${4 * s}"`);
+  if (ladoPasillo === 'izquierda') g += poli([[x1, RESPALDO_ARRIBA + 30, z], [x1, RESPALDO_ARRIBA + 60, z + PROF_ASIENTO], [x1, SUELO, z + PROF_ASIENTO], [x1, SUELO, z]], lado, `stroke="${T}" stroke-width="${4 * s}"`);
+  // Respaldo (cara frontal, paralela a la pantalla) con esquinas redondeadas
+  g += `<path d="M${a} ${d} V${b + rad} Q${a} ${b} ${a + rad} ${b} H${c - rad} Q${c} ${b} ${c} ${b + rad} V${d} Z" fill="${col}" stroke="${T}" stroke-width="${5 * s}"/>`;
+  const [fa, fb] = pr(x1 + 40, FUNDA[0], z), [fc, fd] = pr(x2 - 40, FUNDA[1], z);
+  g += `<rect x="${fa}" y="${fb}" width="${fc - fa}" height="${fd - fb}" rx="${12 * s}" fill="${funda}" stroke="${T}" stroke-width="${3 * s}"/>`;
+  // Costura y bolsillo
+  const [pa, pb] = pr(x1 + 60, 1700, z), [pc, pd] = pr(x2 - 60, 1900, z);
+  g += `<rect x="${pa}" y="${pb}" width="${pc - pa}" height="${pd - pb}" rx="${8 * s}" fill="none" stroke="${niebla('#16302F', z)}" stroke-width="${5 * s}"/>`;
+  // Reposabrazos en el lado del pasillo
+  if (ladoPasillo) {
+    const x = ladoPasillo === 'derecha' ? x2 : x1, dx = ladoPasillo === 'derecha' ? -60 : 60;
+    g += poli([[x + dx, 1600, z], [x, 1600, z], [x, 1600, z + PROF_ASIENTO], [x + dx, 1600, z + PROF_ASIENTO]], niebla('#A8703E', z), `stroke="${T}" stroke-width="${3 * s}"`);
+    g += poli([[x + dx, 1600, z], [x, 1600, z], [x, 1700, z], [x + dx, 1700, z]], brazo, `stroke="${T}" stroke-width="${3 * s}"`);
+  }
+  return g;
+}
+
+function pasajero(cx, z, n) {
+  const zz = z + 0.12, s = 1 / zz, [x, y] = pr(cx, 1035, zz), r = 112 * s;
+  const pelo = [
+    `<path d="M${x - r} ${y - r * 0.1} Q${x - r} ${y - r * 1.15} ${x} ${y - r * 1.05} Q${x + r} ${y - r * 1.15} ${x + r} ${y - r * 0.1} Q${x} ${y - r * 0.45} ${x - r} ${y - r * 0.1} Z" fill="#2A2420"/>`,
+    `<circle cx="${x}" cy="${y - r * 1.02}" r="${r * 0.36}" fill="#5A3A22" stroke="${T}" stroke-width="${r * 0.05}"/><path d="M${x - r} ${y} Q${x} ${y - r * 1.6} ${x + r} ${y} Q${x} ${y - r * 0.6} ${x - r} ${y} Z" fill="#5A3A22"/>`,
+    `<path d="M${x - r * 0.95} ${y - r * 0.3} Q${x} ${y - r * 1.3} ${x + r * 0.95} ${y - r * 0.3} L${x + r * 0.9} ${y - r * 0.55} Q${x} ${y - r * 1.05} ${x - r * 0.9} ${y - r * 0.55} Z" fill="#9A9A96"/>`,
+    `<path d="M${x - r * 1.05} ${y - r * 0.55} H${x + r * 1.05} L${x + r * 0.75} ${y - r * 0.8} Q${x} ${y - r * 1.5} ${x - r * 0.75} ${y - r * 0.8} Z" fill="#3A3A44" stroke="${T}" stroke-width="${r * 0.05}"/>`,
+  ][n % 4];
+  return `<g class="pasajero"><circle cx="${x}" cy="${y}" r="${r}" fill="${niebla('#FFFFFF', zz)}" stroke="${T}" stroke-width="${r * 0.08}"/>${pelo}</g>`;
+}
 
 module.exports = function cabinaPasajeros({ pasajeros = true } = {}) {
-  const t = P.tinta, ASIENTO = '#1F3A3A', ASIENTO2 = '#2A4A48', FUNDA = '#C9B48C', BRAZO = '#8A5A34';
-  // Fila de asientos en perspectiva hacia el fondo (punto de fuga ~ 700, 760)
-  const fila = (lado, k) => { // k=0 cerca, 1 lejos
-    const s = 1 - k * 0.78, y = 1900 - k * 1050, fx = lado < 0 ? 560 - (560 + 160) * s : 820 + (1240 - 820) * s * 0.6;
-    const w = 520 * s, h = 760 * s, x = lado < 0 ? fx - w * 0.15 : fx;
-    return { x, y, w, h, s };
-  };
-  let asientos = '';
-  for (const lado of [-1, 1]) for (let i = 6; i >= 0; i--) {
-    const { x, y, w, h, s } = fila(lado, i / 6);
-    const cab = pasajeros && i > 0 && (i + (lado > 0 ? 1 : 0)) % 2 === 1;
-    asientos += `<g>
-      <path d="M${x} ${y} V${y - h + 60 * s} Q${x} ${y - h} ${x + 60 * s} ${y - h} H${x + w - 60 * s} Q${x + w} ${y - h} ${x + w} ${y - h + 60 * s} V${y} Z" fill="${i % 2 ? ASIENTO : ASIENTO2}" stroke="${t}" stroke-width="${5 * s}"/>
-      <rect x="${x + w * 0.12}" y="${y - h + 30 * s}" width="${w * 0.76}" height="${170 * s}" fill="${FUNDA}" stroke="${t}" stroke-width="${3 * s}"/>
-      <rect x="${lado < 0 ? x + w - 40 * s : x - 10 * s}" y="${y - h * 0.45}" width="${50 * s}" height="${h * 0.12}" rx="${10 * s}" fill="${BRAZO}" stroke="${t}" stroke-width="${4 * s}"/>
-      ${cab ? `<g class="pasajero"><circle cx="${x + w * 0.5}" cy="${y - h - 20 * s}" r="${70 * s}" fill="#fff" stroke="${t}" stroke-width="${6 * s}"/>
-        <g class="ojo"><ellipse cx="${x + w * (lado < 0 ? 0.42 : 0.58)}" cy="${y - h - 26 * s}" rx="${6 * s}" ry="${9 * s}" fill="${t}"/><ellipse cx="${x + w * (lado < 0 ? 0.5 : 0.66)}" cy="${y - h - 26 * s}" rx="${6 * s}" ry="${9 * s}" fill="${t}"/></g></g>` : ''}</g>`;
+  const p = (pts, fill, extra) => poli(pts, fill, extra);
+  let g = '';
+  // Estructura: suelo, paredes, maleteros, techo
+  g += p([[PARED_I, SUELO, 1], [PARED_D, SUELO, 1], [PARED_D, SUELO, FONDO], [PARED_I, SUELO, FONDO]], '#1C2A2C');
+  g += p([[PASILLO[0], SUELO, 1], [PASILLO[1], SUELO, 1], [PASILLO[1], SUELO, FONDO], [PASILLO[0], SUELO, FONDO]], 'url(#moqueta)');
+  g += `<path d="M${pr(PASILLO[0] + 20, SUELO, 1)} L${pr(PASILLO[0] + 20, SUELO, FONDO)} M${pr(PASILLO[1] - 20, SUELO, 1)} L${pr(PASILLO[1] - 20, SUELO, FONDO)}" stroke="#C98A3A" stroke-width="5"/>`;
+  g += p([[PARED_I, TECHO, 1], [PARED_I, SUELO, 1], [PARED_I, SUELO, FONDO], [PARED_I, TECHO, FONDO]], 'url(#paredI)');
+  g += p([[PARED_D, TECHO, 1], [PARED_D, SUELO, 1], [PARED_D, SUELO, FONDO], [PARED_D, TECHO, FONDO]], 'url(#paredD)');
+  // Ventanillas en ambas paredes, entre filas, por encima de los respaldos
+  for (const z of FILAS) for (const [x, dir] of [[PARED_I, 1], [PARED_D, -1]]) {
+    const z1 = z + 0.22, z2 = z + 0.5, y1 = 560, y2 = 920;
+    const [cx, cy] = pr(x, (y1 + y2) / 2, (z1 + z2) / 2), r = 260 / ((z1 + z2) / 2);
+    g += `<ellipse cx="${cx}" cy="${cy}" rx="${r * 0.9}" ry="${r * 1.1}" fill="url(#hRojo)"/>`;
+    const oval = (m) => Array.from({ length: 28 }, (_, i) => { const t = i / 28 * 2 * Math.PI;
+      return [x, (y1 + y2) / 2 + Math.sin(t) * ((y2 - y1) / 2 - m), (z1 + z2) / 2 + Math.cos(t) * ((z2 - z1) / 2 - m / 900)]; });
+    g += p(oval(0), '#7A6A54', `stroke="${T}" stroke-width="${6 / z}"`);
+    g += p(oval(34), '#C0281E', `class="ventanilla" stroke="#4A1A14" stroke-width="${3 / z}"`);
   }
-  let ventanas = '';
-  [[60, 640, 110], [250, 650, 80], [370, 655, 56], [450, 660, 40]].forEach(([x, y, w], i) => {
-    ventanas += `<ellipse cx="${x + w / 2}" cy="${y}" rx="${w * 1.4}" ry="${w * 2}" fill="url(#hRojo)"/>
-      <rect x="${x}" y="${y - w}" width="${w}" height="${w * 1.8}" rx="${w / 2}" fill="#C0281E" stroke="#5A4A3A" stroke-width="${10 - i * 2}"/>
-      <path d="M${x + w * 0.1} ${y + w * 0.2} q${w * 0.3} ${-w * 0.3} ${w * 0.8} 0" stroke="#7A1410" stroke-width="${w * 0.12}" fill="none" opacity="0.7"/>`;
-  });
-  const lucesTecho = [[700, 40, 110], [700, 250, 70], [700, 380, 46], [700, 445, 34]].map(([x, y, w]) => `<rect x="${x - w / 2}" y="${y}" width="${w}" height="${w * 0.3}" rx="${w * 0.1}" fill="#FFD27A" stroke="${t}" stroke-width="3"/>`).join('');
+  // Maleteros (cara inferior + cara interior) y techo
+  g += p([[PARED_I, 380, 1], [220, 380, 1], [220, 380, FONDO], [PARED_I, 380, FONDO]], '#6A5E4A', `stroke="${T}" stroke-width="3"`);
+  g += p([[220, -160, 1], [220, 380, 1], [220, 380, FONDO], [220, -160, FONDO]], '#8E7E60', `stroke="${T}" stroke-width="4"`);
+  g += p([[PARED_D, 380, 1], [1180, 380, 1], [1180, 380, FONDO], [PARED_D, 380, FONDO]], '#6A5E4A', `stroke="${T}" stroke-width="3"`);
+  g += p([[1180, -160, 1], [1180, 380, 1], [1180, 380, FONDO], [1180, -160, FONDO]], '#8E7E60', `stroke="${T}" stroke-width="4"`);
+  g += p([[PARED_I, TECHO, 1], [220, -160, 1], [220, -160, FONDO], [PARED_I, TECHO, FONDO]], '#5A5040');
+  g += p([[PARED_D, TECHO, 1], [1180, -160, 1], [1180, -160, FONDO], [PARED_D, TECHO, FONDO]], '#5A5040');
+  g += p([[220, -160, 1], [450, TECHO, 1], [450, TECHO, FONDO], [220, -160, FONDO]], '#2F3533');
+  g += p([[1180, -160, 1], [950, TECHO, 1], [950, TECHO, FONDO], [1180, -160, FONDO]], '#2F3533');
+  g += p([[450, TECHO, 1], [950, TECHO, 1], [950, TECHO, FONDO], [450, TECHO, FONDO]], '#262C2A');
+  for (const z of FILAS) {
+    g += `<path d="M${pr(220, -160, z)} L${pr(220, 380, z)} M${pr(1180, -160, z)} L${pr(1180, 380, z)}" stroke="#5E5444" stroke-width="${4 / z}"/>`;
+    g += p([[640, TECHO, z + 0.2], [760, TECHO, z + 0.2], [760, TECHO, z + 0.45], [640, TECHO, z + 0.45]], '#FFD27A');
+    for (const x of [0, 1400]) { const [lx, ly] = pr(x, 380, z + 0.15); g += `<circle cx="${lx}" cy="${ly}" r="${70 / z}" fill="url(#hLuz)"/><circle cx="${lx}" cy="${ly}" r="${14 / z}" fill="#FFD27A"/>`; }
+  }
+  // Pared del fondo con la puerta de la cabina de mando
+  g += p([[PARED_I, -160, FONDO], [PARED_D, -160, FONDO], [PARED_D, SUELO, FONDO], [PARED_I, SUELO, FONDO]], '#4A4236');
+  g += p([[560, 200, FONDO], [840, 200, FONDO], [840, SUELO, FONDO], [560, SUELO, FONDO]], '#0E1620', `stroke="${T}" stroke-width="3"`);
+  g += p([[590, 420, FONDO + 3], [810, 420, FONDO + 3], [810, 900, FONDO + 3], [590, 900, FONDO + 3]], '#1E3550');
+  g += `<path d="M${pr(590, 1000, FONDO + 3)} L${pr(810, 1000, FONDO + 3)} M${pr(600, 1100, FONDO + 3)} L${pr(800, 1100, FONDO + 3)}" stroke="#F59A3C" stroke-width="4" stroke-dasharray="5 4"/>`;
+  g += p([[560, 200, FONDO], [610, 200, FONDO], [600, SUELO, FONDO], [560, SUELO, FONDO]], '#2A3A4E');
+  g += p([[790, 200, FONDO], [840, 200, FONDO], [840, SUELO, FONDO], [800, SUELO, FONDO]], '#2A3A4E');
+  // Filas de asientos, de la más lejana a la más cercana
+  let n = 0;
+  for (const z of [...FILAS].reverse()) {
+    for (const [b1, b2, lado] of [[...BLOQUE_I, 'derecha'], [...BLOQUE_D, 'izquierda']]) {
+      const w = (b2 - b1 - 16) / 3;
+      for (let k = 0; k < 3; k++) {
+        const x1 = b1 + k * (w + 8), x2 = x1 + w;
+        const pasillo = (lado === 'derecha' && k === 2) || (lado === 'izquierda' && k === 0) ? lado : null;
+        if (pasajeros && z < 5.5 && ((n * 7 + k * 3) % 5 === 1 || (n + k) % 4 === 0)) g += pasajero((x1 + x2) / 2, z, n + k);
+        g += asiento(x1, x2, z, { ladoPasillo: pasillo });
+      }
+      n++;
+    }
+  }
   return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1920" width="1080" height="1920">
-  <defs>${halo('hRojo', '#FF3A2A', 0.5)}${halo('hTecho', '#FFC066', 0.35)}
-  <linearGradient id="pasillo" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#16262A"/><stop offset="1" stop-color="#22383A"/></linearGradient></defs>
-  <rect width="1080" height="1920" fill="#3A342C"/>
-  <!-- techo abovedado -->
-  <path d="M0 0 H1080 V520 Q860 380 700 470 Q540 380 300 560 L0 700 Z" fill="#2E3432" stroke="${t}" stroke-width="4"/>
-  ${[0, 1, 2, 3, 4].map(i => `<path d="M${600 - i * 140} 0 L${660 - i * 10} 470 M${800 + i * 120} 0 L${740 + i * 10} 470" stroke="#1F2523" stroke-width="4"/>`).join('')}
-  ${lucesTecho}<circle cx="700" cy="200" r="380" fill="url(#hTecho)"/>
-  <!-- maleteros -->
-  <path d="M0 0 L560 470 V560 L0 380 Z" fill="#8A7A60" stroke="${t}" stroke-width="5"/><path d="M0 380 L560 560 L560 600 L0 450 Z" fill="#5E5444" stroke="${t}" stroke-width="4"/>
-  <path d="M1080 300 L840 470 V560 L1080 560 Z" fill="#8A7A60" stroke="${t}" stroke-width="5"/>
-  ${[[110, 400], [320, 470], [450, 520]].map(([x, y]) => `<circle cx="${x}" cy="${y}" r="16" fill="#FFD27A"/><circle cx="${x}" cy="${y}" r="70" fill="url(#hTecho)"/>`).join('')}
-  <!-- pared izquierda con ventanillas -->
-  <path d="M0 450 L560 600 V900 L0 1100 Z" fill="#6A6050" stroke="${t}" stroke-width="4"/>
-  ${ventanas}
-  <!-- puerta de cabina al fondo -->
-  <rect x="590" y="470" width="220" height="460" fill="#0E1620" stroke="${t}" stroke-width="5"/>
-  <rect x="640" y="580" width="120" height="70" fill="#1E3550"/><path d="M640 680 h120 M650 700 h100" stroke="#F59A3C" stroke-width="6" stroke-dasharray="8 6"/>
-  <path d="M590 470 Q620 700 600 930 L640 930 Q660 700 630 470 Z M810 470 Q780 700 800 930 L760 930 Q740 700 770 470 Z" fill="#2A3A4E" stroke="${t}" stroke-width="3"/>
-  <!-- pasillo -->
-  <path d="M640 930 H770 L920 1920 H420 Z" fill="url(#pasillo)"/>
-  <path d="M650 930 L430 1920 M760 930 L900 1920" stroke="#C98A3A" stroke-width="5"/>
-  ${asientos}
+  <defs>${halo('hRojo', '#FF3A2A', 0.45)}${halo('hLuz', '#FFC066', 0.4)}
+    <linearGradient id="paredI" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#7A6E58"/><stop offset="1" stop-color="#3A342A"/></linearGradient>
+    <linearGradient id="paredD" x1="1" y1="0" x2="0" y2="0"><stop offset="0" stop-color="#7A6E58"/><stop offset="1" stop-color="#3A342A"/></linearGradient>
+    <linearGradient id="moqueta" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#1E3436"/><stop offset="1" stop-color="#101C1E"/></linearGradient>
+    <radialGradient id="niebla" cx="${VP[0] / 1080}" cy="${VP[1] / 1920}" r="0.6"><stop offset="0" stop-color="#FFB060" stop-opacity="0.18"/><stop offset="1" stop-color="#FFB060" stop-opacity="0"/></radialGradient></defs>
+  <rect width="1080" height="1920" fill="#2A2620"/>
+  ${g}
+  <rect width="1080" height="1920" fill="url(#niebla)"/>
   </svg>`;
 };

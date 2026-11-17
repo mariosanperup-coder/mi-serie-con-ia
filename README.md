@@ -36,7 +36,7 @@ Shorts verticales (9:16, 30–60 s) de **historias reales de miedo y curiosidade
 - [x] Frases de Teo: entrada "Soy Teo Vela… y esto pasó de verdad." · despedida "Expediente cerrado… o eso dicen."
 - [ ] Crear el canal de YouTube y la cuenta de TikTok (lo hace el usuario).
 - [ ] Elegir las voces en ElevenLabs y apuntarlas en `voces/README.md`.
-- [ ] Elegir el **nombre del canal** (ver propuestas abajo).
+- [x] Nombre del canal: **Expediente Vela** (logo y banner en `marca/`).
 - [ ] Aprobar el diseño de los personajes (`personajes/PROMPTS.md`).
 
 ## Propuestas de nombre (serie y canal)
