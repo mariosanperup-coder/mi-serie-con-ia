@@ -81,7 +81,11 @@ function figura(o = {}) {
   const mano = ([, m]) => `<ellipse cx="${m[0]}" cy="${m[1] + 6}" rx="14" ry="16" fill="${r.manos}" stroke="${T}" stroke-width="4"/>`;
   // Piernas
   let piernas;
-  if (sentado) {
+  if (o.pose === 'arrodillado') { // rodilla en el suelo, espinilla apoyada hacia atrás (perfil mirando a la derecha)
+    const pierna = (dx, oscura) => `<g class="pierna" data-cx="${200 + dx}" data-cy="432">${trazo(`M${198 + dx} 432 L${262 + dx} 640 L${150 + dx} 676`, oscura ? '#3E3E3E' : r.pantalon, 24)}
+      <path d="M${150 + dx} 660 l-46 4 q-12 2 -12 14 v6 h60 z" fill="${r.zapatos}" stroke="${T}" stroke-width="4"/></g>`;
+    piernas = pierna(-14, true) + pierna(8, false);
+  } else if (sentado) {
     const pie = (x) => `<path d="M${x - 16} 640 h48 q12 0 12 14 v8 h-60 z" fill="${r.zapatos}" stroke="${T}" stroke-width="4"/>`;
     piernas = `<g class="pierna sentada" data-cx="316" data-cy="446">${(r.falda ? palo('M200 432 L318 446 L320 636') : trazo('M196 432 L316 446 L318 632', r.pantalon, 24)) + pie(318)}</g>`;
   } else if (perfil) {
