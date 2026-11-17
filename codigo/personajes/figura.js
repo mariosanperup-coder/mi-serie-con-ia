@@ -35,15 +35,15 @@ function cara(vista, nombre) {
   const c = CARAS[vista][nombre] || CARAS[vista].serio;
   let s = `<path d="${c.cejas}" stroke="${T}" stroke-width="7" stroke-linecap="round" fill="none"/>`;
   if (vista === 'frente') {
-    s += c.ojos === 'grandes'
+    s += '<g class="ojo">' + (c.ojos === 'grandes'
       ? `<circle cx="168" cy="124" r="13" fill="#fff" stroke="${T}" stroke-width="4"/><circle cx="232" cy="124" r="13" fill="#fff" stroke="${T}" stroke-width="4"/><circle cx="168" cy="125" r="5" fill="${T}"/><circle cx="232" cy="125" r="5" fill="${T}"/>`
-      : `<ellipse cx="168" cy="124" rx="6" ry="8" fill="${T}"/><ellipse cx="232" cy="124" rx="6" ry="8" fill="${T}"/>`;
+      : `<ellipse cx="168" cy="124" rx="6" ry="8" fill="${T}"/><ellipse cx="232" cy="124" rx="6" ry="8" fill="${T}"/>`) + '</g>';
     if (c.boca === 'O') s += `<ellipse cx="200" cy="156" rx="8" ry="10" fill="${T}"/>`;
     else if (c.boca === 'G') s += `<path d="M180 146 Q200 140 220 146 Q216 178 200 178 Q184 178 180 146 Z" fill="${T}"/><path d="M188 168 Q200 162 212 168" stroke="#C0504D" stroke-width="5" fill="none"/>`;
     else s += `<path d="${c.boca}" stroke="${T}" stroke-width="4.5" fill="none" stroke-linecap="round"/>`;
   } else {
     const [x, y] = c.ojo;
-    s += `<ellipse cx="${x}" cy="${y}" rx="6" ry="8" fill="${T}"/>`;
+    s += `<g class="ojo"><ellipse cx="${x}" cy="${y}" rx="6" ry="8" fill="${T}"/></g>`;
     if (c.boca === 'O') s += `<ellipse cx="246" cy="156" rx="7" ry="9" fill="${T}"/>`;
     else if (c.boca === 'G') s += `<path d="M230 148 L262 144 Q258 176 244 176 Q232 174 230 148 Z" fill="${T}"/>`;
     else s += `<path d="${c.boca}" stroke="${T}" stroke-width="4.5" fill="none" stroke-linecap="round"/>`;
@@ -83,13 +83,14 @@ function figura(o = {}) {
   let piernas;
   if (sentado) {
     const pie = (x) => `<path d="M${x - 16} 640 h48 q12 0 12 14 v8 h-60 z" fill="${r.zapatos}" stroke="${T}" stroke-width="4"/>`;
-    piernas = (r.falda ? trazo('M200 432 L318 446 L320 636', '#151515', 2).replace(/stroke-width="10"/, 'stroke-width="9"') : trazo('M196 432 L316 446 L318 632', r.pantalon, 24)) + pie(318);
+    piernas = `<g class="pierna sentada" data-cx="316" data-cy="446">${(r.falda ? palo('M200 432 L318 446 L320 636') : trazo('M196 432 L316 446 L318 632', r.pantalon, 24)) + pie(318)}</g>`;
   } else if (perfil) {
-    piernas = (r.falda ? palo('M198 520 L196 690 M206 520 L210 690') : trazo('M196 432 L194 684', r.pantalon, 24) + trazo('M206 432 L210 684', r.pantalon, 24))
-      + `<path d="M178 680 h44 q20 2 20 18 v6 h-64 z" fill="${r.zapatos}" stroke="${T}" stroke-width="4"/>`;
+    const zap = x => `<path d="M${x - 22} 680 h44 q20 2 20 18 v6 h-64 z" fill="${r.zapatos}" stroke="${T}" stroke-width="4"/>`;
+    piernas = `<g class="pierna" data-cx="196" data-cy="432">${(r.falda ? palo('M198 520 L196 690') : trazo('M196 432 L194 684', r.pantalon, 24)) + zap(196)}</g>`
+      + `<g class="pierna" data-cx="206" data-cy="432">${(r.falda ? palo('M206 520 L210 690') : trazo('M206 432 L210 684', r.pantalon, 24)) + zap(210)}</g>`;
   } else {
-    piernas = (r.falda ? palo('M182 520 L178 690 M218 520 L222 690') : trazo('M176 432 L172 684', r.pantalon, 26) + trazo('M224 432 L228 684', r.pantalon, 26))
-      + `<ellipse cx="164" cy="696" rx="34" ry="16" fill="${r.zapatos}" stroke="${T}" stroke-width="4"/><ellipse cx="236" cy="696" rx="34" ry="16" fill="${r.zapatos}" stroke="${T}" stroke-width="4"/>`;
+    piernas = `<g class="pierna" data-cx="176" data-cy="432">${(r.falda ? palo('M182 520 L178 690') : trazo('M176 432 L172 684', r.pantalon, 26))}<ellipse cx="164" cy="696" rx="34" ry="16" fill="${r.zapatos}" stroke="${T}" stroke-width="4"/></g>`
+      + `<g class="pierna" data-cx="224" data-cy="432">${(r.falda ? palo('M218 520 L222 690') : trazo('M224 432 L228 684', r.pantalon, 26))}<ellipse cx="236" cy="696" rx="34" ry="16" fill="${r.zapatos}" stroke="${T}" stroke-width="4"/></g>`;
   }
   const falda = r.falda ? (perfil || sentado ? `<path d="M168 420 L240 420 L${sentado ? 300 : 250} 530 L${sentado ? 190 : 156} 530 Z" fill="${r.falda}" stroke="${T}" stroke-width="5"/>` : `<path d="M150 420 L250 420 L268 530 L132 530 Z" fill="${r.falda}" stroke="${T}" stroke-width="5"/>`) : '';
   const torso = perfil

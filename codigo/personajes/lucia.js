@@ -15,7 +15,8 @@ const CARAS = {
   explicando:{ ci: [148,98,184,104], cd: [216,104,252,98], ojos: 'punto', boca: 'M194 152 q6 8 12 0 z' },
 };
 
-function ojos(tipo) {
+function ojos(tipo) { return `<g class="ojo">${ojosDentro(tipo)}</g>`; }
+function ojosDentro(tipo) {
   const t = C.tinta;
   if (tipo === 'arriba') return `<path d="M154 124 h28 M218 124 h28" stroke="${t}" stroke-width="4"/><circle cx="170" cy="114" r="5" fill="${t}"/><circle cx="234" cy="114" r="5" fill="${t}"/>`;
   if (tipo === 'abajo') return `<ellipse cx="168" cy="132" rx="5" ry="6" fill="${t}"/><ellipse cx="230" cy="132" rx="5" ry="6" fill="${t}"/>`;
@@ -31,7 +32,8 @@ function caraLucia(nombre = 'esceptica') {
     <circle cx="232" cy="126" r="24" fill="none" stroke="${t}" stroke-width="3"/>
     <path d="M194 124 Q201 118 208 124 M146 122 L126 116 M256 122 L274 116" stroke="${t}" stroke-width="3" fill="none"/>
     ${ceja(f.ci)}${ceja(f.cd)}
-    <path d="${f.boca}" stroke="${t}" stroke-width="4" fill="${/sorpresa|explicando/.test(nombre) ? t : 'none'}" stroke-linecap="round" stroke-linejoin="round"/>`;
+    <path class="boca" d="${f.boca}" stroke="${t}" stroke-width="4" fill="${/sorpresa|explicando/.test(nombre) ? t : 'none'}" stroke-linecap="round" stroke-linejoin="round"/>
+    <g class="bocaAbierta" opacity="0" transform="translate(200 156)"><ellipse class="bocaForma" rx="12" ry="10" fill="${t}"/></g>`;
 }
 
 function luciaFrente({ cara = 'esceptica' } = {}) {
@@ -44,16 +46,20 @@ function luciaFrente({ cara = 'esceptica' } = {}) {
   <g stroke-linejoin="round" stroke-linecap="round">
     <!-- coleta (detrás de la cabeza) -->
     <path d="M176 52 C140 4 70 20 74 108 C78 170 52 206 30 220 C86 222 120 170 114 108 C110 66 150 48 186 64 Z" fill="${t}"/>
-    <!-- pantalón de pana, ancho -->
-    <path d="M158 396 L202 396 L196 684 L136 684 Z" fill="${C.pantalon}" stroke="${t}" stroke-width="5"/>
-    <path d="M198 396 L242 396 L264 684 L204 684 Z" fill="${C.pantalon}" stroke="${t}" stroke-width="5"/>
-    <path d="${rayas(158, 202, 404, 680, -8)} ${rayas(198, 242, 404, 680, 10)}" stroke="${C.pantalonRaya}" stroke-width="2.5"/>
+    <!-- piernas (pantalón + zapatilla), cada una en su grupo -->
+    <g class="pierna" data-cx="180" data-cy="400">
+      <path d="M158 396 L202 396 L196 684 L136 684 Z" fill="${C.pantalon}" stroke="${t}" stroke-width="5"/>
+      <path d="${rayas(158, 202, 404, 680, -8)}" stroke="${C.pantalonRaya}" stroke-width="2.5"/>
+      <path d="M132 680 L198 680 L200 712 L118 712 Q114 692 132 680 Z" fill="${C.zapa}" stroke="${t}" stroke-width="5"/>
+      <path d="M118 704 H200" stroke="${C.suela}" stroke-width="6"/><path d="M150 688 l14 -4 M154 696 l14 -4" stroke="${t}" stroke-width="3"/>
+    </g>
+    <g class="pierna" data-cx="220" data-cy="400">
+      <path d="M198 396 L242 396 L264 684 L204 684 Z" fill="${C.pantalon}" stroke="${t}" stroke-width="5"/>
+      <path d="${rayas(198, 242, 404, 680, 10)}" stroke="${C.pantalonRaya}" stroke-width="2.5"/>
+      <path d="M202 680 L268 680 Q286 692 282 712 L200 712 Z" fill="${C.zapa}" stroke="${t}" stroke-width="5"/>
+      <path d="M200 704 H282" stroke="${C.suela}" stroke-width="6"/><path d="M236 684 l14 4 M232 692 l14 4" stroke="${t}" stroke-width="3"/>
+    </g>
     <path d="M158 412 H242" stroke="${t}" stroke-width="4"/><circle cx="200" cy="404" r="4" fill="${t}"/>
-    <!-- zapatillas -->
-    <path d="M132 680 L198 680 L200 712 L118 712 Q114 692 132 680 Z" fill="${C.zapa}" stroke="${t}" stroke-width="5"/>
-    <path d="M202 680 L268 680 Q286 692 282 712 L200 712 Z" fill="${C.zapa}" stroke="${t}" stroke-width="5"/>
-    <path d="M118 704 H200 M200 704 H282" stroke="${C.suela}" stroke-width="6"/>
-    <path d="M150 688 l14 -4 M154 696 l14 -4 M236 684 l14 4 M232 692 l14 4" stroke="${t}" stroke-width="3"/>
     <!-- brazos en jarra (detrás del torso) -->
     <path d="M154 234 L108 318 L160 388" fill="none" stroke="${t}" stroke-width="26"/>
     <path d="M154 234 L108 318 L160 388" fill="none" stroke="${C.jersey}" stroke-width="18"/>

@@ -17,7 +17,7 @@ palabras = [w for s in json.load(open(os.path.join(VOZ, 'transcripcion.json'))) 
 
 # Orden del guion: (escena, frase de audio o None = silencio de N segundos)
 ORDEN = [('e01', '01_teo'), ('e02', '02_teo'), ('e03', '03_teo'), ('e04', 1.8), ('e05', '05_teo'),
-         ('e06', '06_lucia'), ('e07', '07_teo'), ('e08', '08_teo'), ('e09', '09_lucia'), ('e10', '10_teo'), ('e11', '11_teo')]
+         ('e06', '06_lucia'), ('e07', '07_teo'), ('e08', '08_teo'), ('e09', '09_lucia'), ('e10', '10_teo'), ('e11', '11_teo'), ('e12', 3.4)]
 HUECO = 0.35  # respiración entre frases
 ARRANQUE = 0.4
 
@@ -43,7 +43,6 @@ for esc, frase in ORDEN:
             subtitulos.append({'p': txt, 'ini': round(t + w['s'] - a, 3), 'fin': round(t + w['e'] - a, 3), 'esc': esc})
     pista.append(trozo); pista.append(np.zeros(int(HUECO * SR)))
     t += len(trozo) / SR + HUECO
-pista.append(np.zeros(int(1.2 * SR)))
 voz = np.concatenate(pista)
 DUR = len(voz) / SR
 E = {e['id']: e for e in escenas}
@@ -114,9 +113,21 @@ pon(barrido * np.minimum(1, k * 2) * np.minimum(1, (3 - k) * 1.5), E['e08']['ini
 k = np.arange(int(0.25 * SR)) / SR
 pon(np.sin(2 * np.pi * 90 * k) * np.exp(-k * 30) + paso_banda(rng.standard_normal(len(k)), 200, 3000) * np.exp(-k * 40) * 0.5, E['e09']['ini'] + 0.5, 0.7)
 
+# Cierre (e12): golpe grave + cola oscura que se apaga
+k = np.arange(int(3.2 * SR)) / SR
+cola = (np.sin(2 * np.pi * 36 * k) * np.exp(-k * 1.6) * 0.9 + np.sin(2 * np.pi * 55 * k) * np.exp(-k * 0.9) * 0.35
+        + paso_banda(rng.standard_normal(len(k)), 100, 700) * np.exp(-k * 1.2) * 0.15)
+pon(cola, E['e12']['ini'] + 0.05, 0.8)
+
 mezcla = voz * 1.0 + musica + sfx
 mezcla = mezcla / max(1.0, np.abs(mezcla).max() / 0.95)
 sf.write(os.path.join(OUT, 'audio_001.wav'), mezcla.astype(np.float32), SR)
+FPS = 30; paso = SR // FPS
+rms = np.array([np.sqrt((voz[i:i + paso] ** 2).mean()) for i in range(0, len(voz), paso)])
+rms = rms / (np.percentile(rms[rms > 0.01], 90) + 1e-9)
+boca = np.clip((rms - 0.12) * 1.3, 0, 1)
+boca = np.convolve(boca, [0.25, 0.5, 0.25], 'same')
+json.dump({'boca': [round(float(x), 2) for x in boca]}, open(os.path.join(OUT, 'boca_001.json'), 'w'))
 json.dump({'duracion': round(DUR, 3), 'escenas': escenas, 'subtitulos': subtitulos}, open(os.path.join(OUT, 'linea_tiempo_001.json'), 'w'), ensure_ascii=False, indent=1)
 print(f'Duración {DUR:.2f}s, {len(escenas)} escenas, {len(subtitulos)} palabras')
 for e in escenas: print(e)

@@ -34,9 +34,10 @@ function tinta({ pose = 'tranquilo' } = {}) {
     <!-- cabeza -->
     <circle cx="150" cy="130" r="74" fill="${C.negro}" stroke="${k}" stroke-width="4"/>
     <!-- ojo grande y ojo pequeño -->
+    <g class="ojo">
     <circle cx="116" cy="126" r="30" fill="${C.ojo}" stroke="${k}" stroke-width="4"/>
     <circle cx="${p.erizado ? 116 : 120}" cy="126" r="${p.ojoGrande / 1.5}" fill="${k}"/>
-    <circle cx="194" cy="120" r="${p.erizado ? 7 : 5}" fill="${C.ojo}"/>
+    <circle cx="194" cy="120" r="${p.erizado ? 7 : 5}" fill="${C.ojo}"/></g>
     ${p.cejaY ? `<path d="M88 100 L144 110" stroke="#555" stroke-width="6"/>` : ''}
     <!-- pico -->
     <path d="M136 150 L172 146 L154 176 Z" fill="${C.pico}" stroke="${k}" stroke-width="3"/>

@@ -13,6 +13,7 @@ const O = require(B + '/objetos/objetos');
 const F = n => require(B + '/fondos/' + n);
 const archivo = F('f09_archivo');
 const LT = JSON.parse(fs.readFileSync(path.join(__dirname, 'salida/linea_tiempo_001.json')));
+const BOCA = JSON.parse(fs.readFileSync(path.join(__dirname, 'salida/boca_001.json'))).boca;
 const FPS = 30, W = 1080, H = 1920;
 
 // --- utilidades SVG ---
@@ -25,9 +26,9 @@ function aislar(svg) {
 const interior = s => s.replace(/^[\s\S]*?<svg[^>]*>/, '').replace(/<\/svg>\s*$/, '');
 const vb = s => s.match(/viewBox="0 0 (\d+) (\d+)"/).slice(1).map(Number);
 // Coloca un SVG en (x, y) con escala; id opcional para animarlo.
-function capa(svg, x = 0, y = 0, esc = 1, id = '') {
+function capa(svg, x = 0, y = 0, esc = 1, id = '', quien = '') {
   const [w, h] = vb(svg);
-  return `<g ${id ? `id="${id}"` : ''}><svg x="${x}" y="${y}" width="${w * esc}" height="${h * esc}" viewBox="0 0 ${w} ${h}" overflow="visible">${interior(aislar(svg))}</svg></g>`;
+  return `<g ${id ? `id="${id}"` : ''} ${quien ? `data-quien="${quien}"` : ''}><svg x="${x}" y="${y}" width="${w * esc}" height="${h * esc}" viewBox="0 0 ${w} ${h}" overflow="visible">${interior(aislar(svg))}</svg></g>`;
 }
 const fondo = (svg) => interior(aislar(svg));
 const luzRoja = (id, x, y, r) => `<g id="${id}"><circle cx="${x}" cy="${y}" r="${r * 4}" fill="url(#hRojoG)"/><circle cx="${x}" cy="${y}" r="${r}" fill="#FF5040"/><circle cx="${x}" cy="${y}" r="${r * 0.5}" fill="#FFD0C0"/></g>`;
@@ -45,8 +46,8 @@ const T = {
 // --- escenas ---
 const archivoSinMesa = archivo({ conMesa: false }), mesa = `<g>${aislar(archivo.mesa())}</g>`;
 const pista = F('f01_pista_noche')();
-const teoPista = (p) => `<g id="${p}zoom">${fondo(pista)}<ellipse cx="620" cy="1712" rx="130" ry="16" fill="#000" opacity="0.45"/>
-  <g id="${p}teo">${capa(teoFrente({ cara: 'serio' }), 420, 1000, 1)}${capa(tinta({ pose: 'tranquilo' }), 642, 1100, 0.34)}</g></g>`;
+const teoPista = (p) => `<g id="${p}zoom">${fondo(pista)}
+  <g id="${p}teo"><ellipse cx="620" cy="1712" rx="130" ry="16" fill="#000" opacity="0.45"/>${capa(teoFrente({ cara: 'serio' }), 420, 1000, 1, '', 'teo')}${capa(tinta({ pose: 'tranquilo' }), 642, 1100, 0.34)}</g></g>`;
 
 const ESCENAS = {
   e01: teoPista('e01'),
@@ -66,21 +67,26 @@ const ESCENAS = {
     <path id="e05mascara" d="M720 955 C650 1150 560 1320 470 1360 C380 1390 300 1250 270 907" fill="none" stroke="#2F7A78" stroke-width="0"/>
     <g id="e05avion"><circle r="18" fill="#B3261E" stroke="#151515" stroke-width="4"/></g>
     <g id="e05rot" opacity="0"><rect x="300" y="860" width="330" height="80" rx="6" fill="#0B0E13" opacity="0.85"/><text x="465" y="918" text-anchor="middle" font-family="JetBrains Mono" font-weight="800" font-size="54" fill="#F2E6CF">MANISES</text></g></g>`,
-  e06: `${fondo(archivoSinMesa)}${capa(luciaFrente({ cara: 'esceptica' }), 290, 760, 1.25, 'e06lucia')}${mesa}`,
-  e07: `<g id="e07a">${fondo(archivoSinMesa)}${capa(teoFrente({ cara: 'chulo', farolEncendido: true }), 290, 760, 1.25, 'e07teo')}${mesa}</g>
+  e06: `${fondo(archivoSinMesa)}${capa(luciaFrente({ cara: 'esceptica' }), 290, 760, 1.25, 'e06lucia', 'lucia')}${mesa}`,
+  e07: `<g id="e07a">${fondo(archivoSinMesa)}${capa(teoFrente({ cara: 'chulo', farolEncendido: true }), 290, 760, 1.25, 'e07teo', 'teo')}${mesa}</g>
     <g id="e07b" style="display:none">${fondo(F('f06_torre_control')())}${luzRoja('e07l1', 420, 620, 12)}${luzRoja('e07l2', 520, 660, 12)}
       ${capa(S.controladora.sorpresa(), 300, 1120, 1.1)}${capa(S.controlador.senala(), -40, 1060, 1.25)}</g>`,
   e08: `<g id="e08a">${fondo(F('f07_base_aerea')())}${capa(O.caza({ postquemador: true }), 0, 0, 0.6, 'e08caza1')}${rotulo('e08rot', 'BASE DE LOS LLANOS')}</g>
     <g id="e08b" style="display:none"><g id="e08pan">${fondo(F('f08_cielo_nubes')())}</g>${luzRoja('e08luz', 0, 0, 16)}${capa(O.caza({ postquemador: true }), 0, 0, 0.5, 'e08caza2')}</g>`,
-  e09: `${fondo(archivoSinMesa)}${capa(luciaFrente({ cara: 'leyendo' }), 290, 760, 1.25)}${mesa}
+  e09: `${fondo(archivoSinMesa)}${capa(luciaFrente({ cara: 'leyendo' }), 290, 760, 1.25, '', 'lucia')}${mesa}
     ${capa(O.expediente({ abierto: true }), 0, 0, 1.2, 'e09exp')}
     <g id="e09sello" opacity="0" transform="translate(540 560) rotate(-12)"><rect x="-330" y="-62" width="660" height="124" rx="10" fill="none" stroke="#C0392B" stroke-width="12"/>
       <text x="0" y="26" text-anchor="middle" font-family="JetBrains Mono" font-weight="800" font-size="78" fill="#C0392B">DESCLASIFICADO</text></g>`,
-  e10: `<g id="e10zoom">${fondo(archivoSinMesa)}${capa(teoFrente({ cara: 'serio' }), 290, 760, 1.25)}${mesa}</g>`,
+  e10: `<g id="e10zoom">${fondo(archivoSinMesa)}${capa(teoFrente({ cara: 'serio' }), 290, 760, 1.25, '', 'teo')}${mesa}</g>`,
   e11: teoPista('e11'),
+  e12: `<rect width="1080" height="1920" fill="#07090D"/><circle cx="540" cy="760" r="520" fill="url(#hFocoG)"/>
+    <g id="e12tinta" opacity="0">${capa(tinta({ pose: 'desconfia' }), 390, 520, 1.0)}</g>
+    <g id="e12txt" opacity="0"><text x="540" y="1060" text-anchor="middle" font-family="Inter" font-weight="900" font-size="86" fill="#FFD34D" stroke="#0B0E13" stroke-width="12" paint-order="stroke">¿Tú qué crees</text>
+      <text x="540" y="1160" text-anchor="middle" font-family="Inter" font-weight="900" font-size="86" fill="#FFD34D" stroke="#0B0E13" stroke-width="12" paint-order="stroke">que era?</text>
+      <text x="540" y="1290" text-anchor="middle" font-family="Inter" font-weight="700" font-size="52" fill="#F2E6CF">Te leo en comentarios ↓</text></g>`,
 };
 
-const html = `<!doctype html><html><head><style>body{margin:0;background:#000}#sub tspan{paint-order:stroke}</style></head><body>
+const html = `<!doctype html><html><head><style>body{margin:0;background:#000} .ojo{transform-box:fill-box;transform-origin:center}#sub tspan{paint-order:stroke}</style></head><body>
 <svg id="lienzo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}" width="${W}" height="${H}">
 <defs><radialGradient id="hRojoG"><stop offset="0" stop-color="#FF4A3A" stop-opacity="0.85"/><stop offset="1" stop-color="#FF4A3A" stop-opacity="0"/></radialGradient>
 <radialGradient id="hFocoG"><stop offset="0" stop-color="#FFC066" stop-opacity="0.35"/><stop offset="1" stop-color="#FFC066" stop-opacity="0"/></radialGradient>
@@ -91,7 +97,7 @@ ${Object.entries(ESCENAS).map(([id, s]) => `<g id="${id}" style="display:none">$
 <rect id="negro" width="${W}" height="${H}" fill="#000" opacity="0"/>
 </svg>
 <script>
-const LT = ${JSON.stringify(LT)}, T = ${JSON.stringify(T)};
+const LT = ${JSON.stringify(LT)}, T = ${JSON.stringify(T)}, BOCA = ${JSON.stringify(BOCA)};
 const $ = id => document.getElementById(id);
 const cl = (x, a = 0, b = 1) => Math.max(a, Math.min(b, x));
 const suave = x => { x = cl(x); return x * x * (3 - 2 * x); };
@@ -120,14 +126,49 @@ function subtitulos(t) {
     el.appendChild(ts); });
 }
 
+// --- Vida de los personajes ---
+const ANDA = new Map(); // contenedor -> intensidad del paso (0..1)
+function andar(id, k) { ANDA.set(id, k); }
+const paso = t => Math.abs(Math.sin(t * 11)) * 8; // bote del cuerpo al andar
+function vida(t, escena) {
+  const raiz = $(escena.id);
+  // Parpadeo: cada par de ojos con su propio ritmo
+  raiz.querySelectorAll('.ojo').forEach((o, i) => {
+    const per = 2.6 + ((i * 0.73) % 1.9), fase = (t + i * 1.37) % per;
+    o.style.transform = fase < 0.13 ? 'scaleY(0.12)' : '';
+  });
+  // Boca: se abre con el volumen de la voz del personaje que habla en esta escena
+  const quien = escena.frase ? escena.frase.split('_')[1] : '';
+  const v = BOCA[Math.min(BOCA.length - 1, Math.floor(t * 30))] || 0;
+  raiz.querySelectorAll('[data-quien]').forEach(c => {
+    const a = c.dataset.quien === quien ? v : 0, abre = a > 0.1;
+    c.querySelectorAll('.boca').forEach(b => b.setAttribute('opacity', abre ? 0 : 1));
+    c.querySelectorAll('.bocaAbierta').forEach(b => b.setAttribute('opacity', abre ? 1 : 0));
+    c.querySelectorAll('.bocaForma').forEach(b => { b.setAttribute('ry', 4 + 13 * a); b.setAttribute('rx', 10 + 4 * a); });
+  });
+  // Piernas: andar si el contenedor está andando; si no, pequeños cambios de peso (o golpecitos con el pie si está sentado)
+  raiz.querySelectorAll('.pierna').forEach((pi, i) => {
+    const cx = pi.dataset.cx, cy = pi.dataset.cy, lado = i % 2 ? -1 : 1;
+    let k = 0; for (const [id, kk] of ANDA) if ($(id) && $(id).contains(pi)) k = kk;
+    let ang;
+    if (k > 0) ang = lado * 20 * k * Math.sin(t * 11);
+    else if (pi.classList.contains('sentada')) ang = -4 * Math.max(0, Math.sin(t * 7 + i)) ** 4;
+    else ang = lado * 2.2 * Math.sin(t * 1.3 + i * 0.7) + 2.5 * Math.max(0, Math.sin(t * 0.8 + i)) ** 6 * lado;
+    pi.setAttribute('transform', \`rotate(\${ang.toFixed(2)} \${cx} \${cy})\`);
+  });
+}
+
 function render(t) {
+  ANDA.clear();
   const e = LT.escenas.find(e => t >= e.ini && t < e.fin) || (t < LT.escenas[0].ini ? LT.escenas[0] : LT.escenas[LT.escenas.length - 1]);
   for (const x of LT.escenas) ver(x.id, x.id === e.id);
   const p = prog(t, e.ini, e.fin), d = t - e.ini;
   op('negro', t < 0.4 ? 1 - t / 0.4 : Math.max(0, 0.6 - d * 4));
   const resp = 1 + 0.008 * Math.sin(t * 2.4); // respiración
   switch (e.id) {
-    case 'e01': zoom('e01zoom', 1 + 0.07 * suave(p), 620, 1300); zoom('e01teo', resp, 620, 1712); break;
+    case 'e01': { zoom('e01zoom', 1 + 0.07 * suave(p), 620, 1300);
+      const k = suave(prog(d, 0, 1.6)), an = d < 1.6 ? 1 : 0; andar('e01teo', an);
+      $('e01teo').setAttribute('transform', \`translate(\${-900 * (1 - k)} \${-paso(t) * an}) translate(620 1712) scale(\${resp}) translate(-620 -1712)\`); break; }
     case 'e11': zoom('e11zoom', 1.07 - 0.07 * suave(p), 620, 1300); zoom('e11teo', resp, 620, 1712); break;
     case 'e02': {
       $('e02pan').setAttribute('transform', \`translate(\${-1400 * suave(p)} 0)\`);
@@ -158,9 +199,10 @@ function render(t) {
       const pt = ruta.getPointAtLength(L * k); $('e05avion').setAttribute('transform', \`translate(\${pt.x} \${pt.y})\`);
       op('e05rot', prog(t, e.fin - 1.6, e.fin - 1.2));
       zoom('e05zoom', 1.05 + 0.1 * suave(p), 480, 1100); break; }
-    case 'e06': mueve('e06lucia', -620 * (1 - suave(prog(d, 0, 0.5))), 0); break;
+    case 'e06': { const an = d < 0.9 ? 1 : 0; andar('e06lucia', an); mueve('e06lucia', -620 * (1 - suave(prog(d, 0, 0.9))), -paso(t) * an); break; }
     case 'e07': { const b = t >= T.en; ver('e07a', !b); ver('e07b', b);
-      zoom('e07teo', resp, 540, 1650);
+      { const an = d < 0.9 ? 1 : 0; andar('e07teo', an);
+        $('e07teo').setAttribute('transform', \`translate(\${700 * (1 - suave(prog(d, 0, 0.9)))} \${-paso(t) * an}) translate(540 1650) scale(\${resp}) translate(-540 -1650)\`); }
       const lp = 1 + 0.15 * Math.sin(t * 9); luz('e07l1', 0, 0, 1); $('e07l1').setAttribute('transform', \`translate(\${20 * Math.sin(t * 1.5)} 0)\`); $('e07l2').setAttribute('transform', \`translate(\${20 * Math.cos(t * 1.5)} 0)\`); break; }
     case 'e08': { const b = t >= T.elPiloto; ver('e08a', !b); ver('e08b', b);
       if (!b) { const k = prog(t, e.ini + 0.2, T.elPiloto); const x = -720 + 1500 * k * k, y = 1380 - 500 * Math.max(0, k - 0.3) ** 1.5;
@@ -178,7 +220,9 @@ function render(t) {
       const s = prog(d, 0.45, 0.55); op('e09sello', s);
       $('e09sello').setAttribute('transform', \`translate(330 560) rotate(-14) scale(\${(1.6 - 0.6 * suave(s)) * 0.52})\`); break; }
     case 'e10': zoom('e10zoom', 1 + 0.35 * suave(p), 540, 900); break;
+    case 'e12': op('e12tinta', prog(d, 0.3, 0.8)); op('e12txt', prog(d, 0.6, 1.1)); break;
   }
+  vida(t, e);
   subtitulos(t);
 }
 window.render = render;

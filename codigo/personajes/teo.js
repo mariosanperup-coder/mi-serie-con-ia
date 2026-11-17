@@ -17,6 +17,9 @@ const CARAS = {
 };
 
 function ojos(tipo) {
+  return `<g class="ojo">${ojosDentro(tipo)}</g>`;
+}
+function ojosDentro(tipo) {
   if (tipo === 'abiertos') return `
     <circle cx="170" cy="124" r="14" fill="#fff" stroke="${C.tinta}" stroke-width="4"/>
     <circle cx="230" cy="124" r="14" fill="#fff" stroke="${C.tinta}" stroke-width="4"/>
@@ -31,7 +34,8 @@ function cara(nombre = 'serio') {
   const f = CARAS[nombre];
   const ceja = ([a, b, c, d]) => `<path d="M${a} ${b} L${c} ${d}" stroke="${C.tinta}" stroke-width="7" stroke-linecap="round"/>`;
   return `${ceja(f.ci)}${ceja(f.cd)}${ojos(f.ojos)}
-    <path d="${f.boca}" stroke="${C.tinta}" stroke-width="4.5" fill="${nombre === 'sorpresa' ? C.tinta : 'none'}" stroke-linecap="round" stroke-linejoin="round"/>`;
+    <path class="boca" d="${f.boca}" stroke="${C.tinta}" stroke-width="4.5" fill="${nombre === 'sorpresa' ? C.tinta : 'none'}" stroke-linecap="round" stroke-linejoin="round"/>
+    <g class="bocaAbierta" opacity="0" transform="translate(${nombre === 'chulo' ? 204 : 200} 154)"><ellipse class="bocaForma" rx="14" ry="12" fill="${C.tinta}"/></g>`;
 }
 
 // Farol de latón (según la referencia): aro arriba, cúpula con respiraderos, jaula de cristal
@@ -59,14 +63,17 @@ function teoFrente({ cara: expr = 'serio', farolEncendido = true } = {}) {
   const t = C.tinta;
   return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 760" width="400" height="760">
   <g stroke-linecap="round" stroke-linejoin="round">
-    <!-- piernas -->
-    <path d="M176 470 L170 660" stroke="${t}" stroke-width="30"/><path d="M176 470 L170 660" stroke="${C.pantalon}" stroke-width="22"/>
-    <path d="M224 470 L230 660" stroke="${t}" stroke-width="30"/><path d="M224 470 L230 660" stroke="${C.pantalon}" stroke-width="22"/>
-    <!-- botas -->
-    <path d="M150 640 L190 640 L192 690 L196 694 L196 712 L132 712 Q126 690 150 682 Z" fill="${C.bota}" stroke="${t}" stroke-width="5"/>
-    <path d="M210 640 L250 640 L250 682 Q274 690 268 712 L204 712 L204 694 L208 690 Z" fill="${C.bota}" stroke="${t}" stroke-width="5"/>
-    <path d="M132 704 L196 704 M204 704 L268 704" stroke="${C.botaSombra}" stroke-width="6"/>
-    <path d="M160 656 L180 650 M160 668 L180 662 M220 650 L240 656 M220 662 L240 668" stroke="${t}" stroke-width="3"/>
+    <!-- piernas: cada una en su grupo para girar desde la cadera -->
+    <g class="pierna" data-cx="176" data-cy="470">
+      <path d="M176 470 L170 660" stroke="${t}" stroke-width="30"/><path d="M176 470 L170 660" stroke="${C.pantalon}" stroke-width="22"/>
+      <path d="M150 640 L190 640 L192 690 L196 694 L196 712 L132 712 Q126 690 150 682 Z" fill="${C.bota}" stroke="${t}" stroke-width="5"/>
+      <path d="M132 704 L196 704" stroke="${C.botaSombra}" stroke-width="6"/><path d="M160 656 L180 650 M160 668 L180 662" stroke="${t}" stroke-width="3"/>
+    </g>
+    <g class="pierna" data-cx="224" data-cy="470">
+      <path d="M224 470 L230 660" stroke="${t}" stroke-width="30"/><path d="M224 470 L230 660" stroke="${C.pantalon}" stroke-width="22"/>
+      <path d="M210 640 L250 640 L250 682 Q274 690 268 712 L204 712 L204 694 L208 690 Z" fill="${C.bota}" stroke="${t}" stroke-width="5"/>
+      <path d="M204 704 L268 704" stroke="${C.botaSombra}" stroke-width="6"/><path d="M220 650 L240 656 M220 662 L240 668" stroke="${t}" stroke-width="3"/>
+    </g>
     <!-- camisa bajo el abrigo -->
     <path d="M178 235 L222 235 L226 470 L174 470 Z" fill="${C.camisa}" stroke="${t}" stroke-width="5"/>
     <!-- abrigo: dos mitades -->
