@@ -8,6 +8,7 @@ const B = path.join(__dirname, '..');
 const { teoFrente } = require(B + '/personajes/teo');
 const { tinta } = require(B + '/personajes/tinta');
 const { luciaFrente } = require(B + '/personajes/lucia');
+const { teoPerfil, luciaPerfil } = require(B + '/personajes/perfiles');
 const S = require(B + '/personajes/secundarios');
 const O = require(B + '/objetos/objetos');
 const F = n => require(B + '/fondos/' + n);
@@ -47,7 +48,9 @@ const T = {
 const archivoSinMesa = archivo({ conMesa: false }), mesa = `<g>${aislar(archivo.mesa())}</g>`;
 const pista = F('f01_pista_noche')();
 const teoPista = (p) => `<g id="${p}zoom">${fondo(pista)}
-  <g id="${p}teo"><ellipse cx="620" cy="1712" rx="130" ry="16" fill="#000" opacity="0.45"/>${capa(teoFrente({ cara: 'serio' }), 420, 1000, 1, '', 'teo')}${capa(tinta({ pose: 'tranquilo' }), 642, 1100, 0.34)}</g></g>`;
+  <g id="${p}teo"><ellipse cx="620" cy="1712" rx="130" ry="16" fill="#000" opacity="0.45"/>
+    <g id="${p}F">${capa(teoFrente({ cara: 'serio' }), 420, 1000, 1, '', 'teo')}${capa(tinta({ pose: 'tranquilo' }), 642, 1100, 0.34)}</g>
+    <g id="${p}P" style="display:none">${capa(teoPerfil(), 420, 1000, 1, '', 'teo')}${capa(tinta({ pose: 'tranquilo' }), 518, 1100, 0.34)}</g></g></g>`;
 
 const ESCENAS = {
   e01: teoPista('e01'),
@@ -67,8 +70,9 @@ const ESCENAS = {
     <path id="e05mascara" d="M720 955 C650 1150 560 1320 470 1360 C380 1390 300 1250 270 907" fill="none" stroke="#2F7A78" stroke-width="0"/>
     <g id="e05avion"><circle r="18" fill="#B3261E" stroke="#151515" stroke-width="4"/></g>
     <g id="e05rot" opacity="0"><rect x="300" y="860" width="330" height="80" rx="6" fill="#0B0E13" opacity="0.85"/><text x="465" y="918" text-anchor="middle" font-family="JetBrains Mono" font-weight="800" font-size="54" fill="#F2E6CF">MANISES</text></g></g>`,
-  e06: `${fondo(archivoSinMesa)}${capa(luciaFrente({ cara: 'esceptica' }), 290, 760, 1.25, 'e06lucia', 'lucia')}${mesa}`,
-  e07: `<g id="e07a">${fondo(archivoSinMesa)}${capa(teoFrente({ cara: 'chulo', farolEncendido: true }), 290, 760, 1.25, 'e07teo', 'teo')}${mesa}</g>
+  e06: `${fondo(archivoSinMesa)}${`<g id="e06lucia"><g id="e06F">${capa(luciaFrente({ cara: 'esceptica' }), 290, 760, 1.25, '', 'lucia')}</g><g id="e06P" style="display:none">${capa(luciaPerfil(), 290, 760, 1.25, '', 'lucia')}</g></g>`}${mesa}`,
+  e07: `<g id="e07a">${fondo(archivoSinMesa)}${`<g id="e07teo"><g id="e07F">${capa(teoFrente({ cara: 'chulo', farolEncendido: true }), 290, 760, 1.25, '', 'teo')}</g>
+    <g id="e07P" style="display:none" transform="translate(1080 0) scale(-1 1)">${capa(teoPerfil(), 290, 760, 1.25, '', 'teo')}</g></g>`}${mesa}</g>
     <g id="e07b" style="display:none">${fondo(F('f06_torre_control')())}${luzRoja('e07l1', 420, 620, 12)}${luzRoja('e07l2', 520, 660, 12)}
       ${capa(S.controladora.sorpresa(), 300, 1120, 1.1)}${capa(S.controlador.senala(), -40, 1060, 1.25)}</g>`,
   e08: `<g id="e08a">${fondo(F('f07_base_aerea')())}${capa(O.caza({ postquemador: true }), 0, 0, 0.6, 'e08caza1')}${rotulo('e08rot', 'BASE DE LOS LLANOS')}</g>
@@ -129,7 +133,7 @@ function subtitulos(t) {
 // --- Vida de los personajes ---
 const ANDA = new Map(); // contenedor -> intensidad del paso (0..1)
 function andar(id, k) { ANDA.set(id, k); }
-const paso = t => Math.abs(Math.sin(t * 11)) * 8; // bote del cuerpo al andar
+const paso = t => Math.abs(Math.sin(t * 9)) * 10; // bote del cuerpo al andar
 function vida(t, escena) {
   const raiz = $(escena.id);
   // Parpadeo: cada par de ojos con su propio ritmo
@@ -151,10 +155,15 @@ function vida(t, escena) {
     const cx = pi.dataset.cx, cy = pi.dataset.cy, lado = i % 2 ? -1 : 1;
     let k = 0; for (const [id, kk] of ANDA) if ($(id) && $(id).contains(pi)) k = kk;
     let ang;
-    if (k > 0) ang = lado * 20 * k * Math.sin(t * 11);
+    if (k > 0) ang = lado * 28 * k * Math.sin(t * 9);
     else if (pi.classList.contains('sentada')) ang = -4 * Math.max(0, Math.sin(t * 7 + i)) ** 4;
     else ang = lado * 2.2 * Math.sin(t * 1.3 + i * 0.7) + 2.5 * Math.max(0, Math.sin(t * 0.8 + i)) ** 6 * lado;
     pi.setAttribute('transform', \`rotate(\${ang.toFixed(2)} \${cx} \${cy})\`);
+  });
+  raiz.querySelectorAll('.brazo').forEach((br, i) => {
+    let k = 0; for (const [id, kk] of ANDA) if ($(id) && $(id).contains(br)) k = kk;
+    const ang = (i % 2 ? 1 : -1) * 24 * k * Math.sin(t * 9);
+    br.setAttribute('transform', \`rotate(\${ang.toFixed(2)} \${br.dataset.cx} \${br.dataset.cy})\`);
   });
 }
 
@@ -167,7 +176,7 @@ function render(t) {
   const resp = 1 + 0.008 * Math.sin(t * 2.4); // respiración
   switch (e.id) {
     case 'e01': { zoom('e01zoom', 1 + 0.07 * suave(p), 620, 1300);
-      const k = suave(prog(d, 0, 1.6)), an = d < 1.6 ? 1 : 0; andar('e01teo', an);
+      const k = suave(prog(d, 0, 1.6)), an = d < 1.6 ? 1 : 0; andar('e01teo', an); ver('e01P', an); ver('e01F', !an);
       $('e01teo').setAttribute('transform', \`translate(\${-900 * (1 - k)} \${-paso(t) * an}) translate(620 1712) scale(\${resp}) translate(-620 -1712)\`); break; }
     case 'e11': zoom('e11zoom', 1.07 - 0.07 * suave(p), 620, 1300); zoom('e11teo', resp, 620, 1712); break;
     case 'e02': {
@@ -199,9 +208,9 @@ function render(t) {
       const pt = ruta.getPointAtLength(L * k); $('e05avion').setAttribute('transform', \`translate(\${pt.x} \${pt.y})\`);
       op('e05rot', prog(t, e.fin - 1.6, e.fin - 1.2));
       zoom('e05zoom', 1.05 + 0.1 * suave(p), 480, 1100); break; }
-    case 'e06': { const an = d < 0.9 ? 1 : 0; andar('e06lucia', an); mueve('e06lucia', -620 * (1 - suave(prog(d, 0, 0.9))), -paso(t) * an); break; }
+    case 'e06': { const an = d < 0.9 ? 1 : 0; andar('e06lucia', an); ver('e06P', an); ver('e06F', !an); mueve('e06lucia', -620 * (1 - suave(prog(d, 0, 0.9))), -paso(t) * an); break; }
     case 'e07': { const b = t >= T.en; ver('e07a', !b); ver('e07b', b);
-      { const an = d < 0.9 ? 1 : 0; andar('e07teo', an);
+      { const an = d < 0.9 ? 1 : 0; andar('e07teo', an); ver('e07P', an); ver('e07F', !an);
         $('e07teo').setAttribute('transform', \`translate(\${700 * (1 - suave(prog(d, 0, 0.9)))} \${-paso(t) * an}) translate(540 1650) scale(\${resp}) translate(-540 -1650)\`); }
       const lp = 1 + 0.15 * Math.sin(t * 9); luz('e07l1', 0, 0, 1); $('e07l1').setAttribute('transform', \`translate(\${20 * Math.sin(t * 1.5)} 0)\`); $('e07l2').setAttribute('transform', \`translate(\${20 * Math.cos(t * 1.5)} 0)\`); break; }
     case 'e08': { const b = t >= T.elPiloto; ver('e08a', !b); ver('e08b', b);
