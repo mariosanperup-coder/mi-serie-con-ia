@@ -9,6 +9,7 @@ Se hacen en **ElevenLabs con voces de la biblioteca**: las eliges tú, generas l
 - Si es más cómodo, también vale **un solo audio por personaje y episodio** (`teo.mp3`, `lucia.mp3`) y yo lo corto.
 
 ## Voces elegidas
+> Episodio 001: audio completo en `voces/001-caso-manises/definitivo/` (Teo y Lucía en el mismo archivo; Lucía al final). Frases cortadas y con tiempos por palabra.
 | Personaje | Nombre de la voz en ElevenLabs | Voice ID | Ajustes (estabilidad, similitud, estilo, velocidad) |
 |---|---|---|---|
 | Teo | | | |
