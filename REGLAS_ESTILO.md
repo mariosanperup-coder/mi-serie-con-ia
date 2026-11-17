@@ -23,6 +23,10 @@ Claude las revisa ANTES de entregar cada vídeo. Son obligatorias en todos los e
 14. **Ningún texto se sale** de su recuadro ni de la pantalla.
 15. Los subtítulos, como están (gustan).
 
+## Audio
+19. **Cortes de voz limpios:** cada frase se corta en la pausa larga real entre párrafos (nunca con restos de la palabra anterior ni de la siguiente, como "verdad… ad").
+20. **Verificar cada corte** transcribiéndolo por separado antes de montar el vídeo.
+
 ## Forma de trabajar
 16. **Antes de generar el vídeo, enseñar imágenes** de las escenas para aprobarlas (el render gasta tiempo y créditos).
 17. Revisar fotograma a fotograma (cada ~2 s) buscando fallos visibles antes de entregar.

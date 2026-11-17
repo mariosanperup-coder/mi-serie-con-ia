@@ -66,6 +66,36 @@ def limite_fin(y, t, tope):  # alarga el final hasta el silencio real
         t += 0.05
     return t
 
+# Cortes en silencios reales: cada frase empieza al final de un silencio y acaba al empezar el siguiente.
+def huecos(y, umbral=-45, minimo=0.12):
+    paso = int(0.02 * SR); db = np.array([20 * np.log10(np.sqrt((y[i:i + paso] ** 2).mean()) + 1e-9) for i in range(0, len(y), paso)])
+    sil = db < umbral; out = []; i = 0
+    while i < len(sil):
+        if sil[i]:
+            j = i
+            while j < len(sil) and sil[j]: j += 1
+            if (j - i) * 0.02 >= minimo: out.append((i * 0.02, j * 0.02))
+            i = j
+        else: i += 1
+    return out
+HUECOS = {q: [(0.0, 0.0)] + huecos(AUD[q]) + [(len(AUD[q]) / SR, len(AUD[q]) / SR)] for q in ('teo', 'lucia')}
+# Fronteras entre frases: en cada cambio de párrafo, la pausa MÁS LARGA cerca del cambio previsto.
+def fronteras(q):
+    lineas = AL[q]; H = HUECOS[q]; fr = []
+    for i in range(len(lineas) - 1):
+        t = (lineas[i][-1][2] + lineas[i + 1][0][1]) / 2
+        fin_i, ini_j = lineas[i][-1][2], lineas[i + 1][0][1]
+        cand = [h for h in H if fin_i - 0.4 <= (h[0] + h[1]) / 2 <= ini_j + 0.3]
+        if not cand: cand = [h for h in H if abs((h[0] + h[1]) / 2 - t) < 1.8]
+        fr.append(max(cand, key=lambda h: h[1] - h[0]) if cand else (t, t))
+    return fr
+FR = {q: fronteras(q) for q in ('teo', 'lucia')}
+def cortes_linea(q, x):
+    fr = FR[q]
+    a = fr[x - 1][1] if x > 0 else 0.0
+    b = fr[x][0] if x < len(fr) else len(AUD[q]) / SR
+    return max(0, a - 0.05), b + 0.1
+
 # Escenas: (id, quién, índice de línea) o (id, None, segundos de silencio)
 ORDEN = [('e01', 'teo', 0), ('e02', 'teo', 1), ('e03', 'teo', 2), ('e04', 'teo', 3), ('e05', 'teo', 4), ('e06', None, 2.0),
          ('e07', 'lucia', 0), ('e08', 'teo', 5), ('e09', 'teo', 6), ('e10', 'lucia', 1), ('e11', 'teo', 7), ('e12', 'teo', 8), ('e13', None, 3.6)]
@@ -77,7 +107,7 @@ for esc, quien, x in ORDEN:
         escenas.append({'id': esc, 'ini': round(t, 3), 'fin': round(t + x, 3)}); pista.append(np.zeros(int(x * SR))); t += x; continue
     lin = AL[quien][x]; y = AUD[quien]
     sig = AL[quien][x + 1][0][1] if x + 1 < len(AL[quien]) else len(y) / SR
-    a = max(0, lin[0][1] - 0.08); b = limite_fin(y, lin[-1][2], sig - 0.05) + 0.06
+    a, b = cortes_linea(quien, x)
     trozo = y[int(a * SR):int(b * SR)]
     escenas.append({'id': esc, 'ini': round(t, 3), 'fin': round(t + len(trozo) / SR + HUECO, 3), 'frase': f'{x:02d}_{quien}'})
     for w, s, e in lin: subs.append({'p': w, 'ini': round(t + s - a, 3), 'fin': round(t + e - a, 3), 'esc': esc})
