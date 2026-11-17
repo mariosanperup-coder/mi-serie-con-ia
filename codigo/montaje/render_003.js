@@ -121,7 +121,7 @@ const ESCENAS = {
     <rect id="e09flash" width="1080" height="1920" fill="#fff" opacity="0"/>
     <g id="e09cont" opacity="0"><rect x="200" y="240" width="680" height="210" rx="14" fill="#0B0E13" opacity="0.85"/>
       <text id="e09num" x="540" y="370" text-anchor="middle" font-family="Inter" font-weight="900" font-size="110" fill="#FFD34D">0</text><text x="540" y="420" text-anchor="middle" font-family="JetBrains Mono" font-weight="800" font-size="34" fill="#F2E6CF">VISITANTES</text></g>
-    ${etiqueta('e09hab', 'BORJA: 5.000 HABITANTES', 540, 560)}`,
+    ${etiqueta('e09hab', 'BORJA: 5.000 HABITANTES', 540, 580)}`,
   e10: `<g id="e10zoom">${fondo(iglesia())}${cuadro('e10c', true)}
     ${sombra(290, 1500, 150)}<rect x="150" y="1280" width="300" height="200" fill="#7A4E2A" stroke="#0B0E13" stroke-width="5"/><rect x="140" y="1266" width="320" height="22" fill="#8A5A30" stroke="#0B0E13" stroke-width="4"/>
     <g id="e10cartel" opacity="0"><rect x="190" y="1110" width="220" height="150" rx="8" fill="#F2E6CF" stroke="#0B0E13" stroke-width="5"/>
@@ -224,7 +224,7 @@ function render(t) {
   op('negro', t < 0.4 ? 1 - t / 0.4 : Math.max(0, 0.6 - d * 4));
   const resp = 1 + 0.008 * Math.sin(t * 2.4); // respiración
   switch (e.id) {
-    case 'e01': $('e01zoom').setAttribute('transform', \`translate(540 900) scale(\${1.1 + 1.3 * suave(prog(d, 0, 4))}) translate(-620 -640)\`); break;
+    case 'e01': $('e01zoom').setAttribute('transform', \`translate(540 900) scale(\${1.5 + 0.9 * suave(prog(d, 0, 4))}) translate(-620 -640)\`); break;
     case 'e02': $('e02zoom').setAttribute('transform', \`translate(540 1150) scale(\${2.3 + 0.1 * suave(p)}) translate(-640 -1520)\`); zoom('e02teo', resp, 640, 1640);
       op('e02rot', prog(d, 0.15, 0.5)); $('e02rot').setAttribute('transform', \`translate(540 300) scale(\${1.25 - 0.25 * suave(prog(d, 0.15, 0.45))})\`); break;
     case 'e03': { const b = t >= T.santuario + 0.3; ver('e03a', !b); ver('e03b', b);
@@ -240,7 +240,7 @@ function render(t) {
       const cae = suave(prog(d, 0.95, 1.2)); $('e06tinta').setAttribute('transform', \`translate(\${-30 * cae} \${40 * cae}) rotate(\${-70 * cae} 540 1500)\`); break; }
     case 'e07': { const an = d < 0.9 ? 1 : 0, s = t >= T.madre; andar('e07lucia', an); ver('e07P', an); ver('e07F', !an && !s); ver('e07S', !an && s);
       mueve('e07lucia', -620 * (1 - suave(prog(d, 0, 0.9))), -paso(t) * an); break; }
-    case 'e08': document.querySelectorAll('#e08 .movil').forEach(m => { const i = +m.dataset.i, k = suave(prog(t, T.agosto + i * 0.7, T.agosto + i * 0.7 + 0.3));
+    case 'e08': document.querySelectorAll('#e08 .movil').forEach(m => { const i = +m.dataset.i, k = suave(prog(t, e.ini + 0.3 + i * 0.6, e.ini + 0.6 + i * 0.6));
         m.setAttribute('opacity', k * (1 - 0.6 * prog(t, T.ecce_mono - 0.2, T.ecce_mono))); });
       { const s = prog(t, T.ecce_mono - 0.1, T.ecce_mono + 0.05); op('e08sello', s); $('e08sello').setAttribute('transform', \`translate(540 960) rotate(-8) scale(\${1.6 - 0.6 * suave(s)})\`); } break;
     case 'e09': { $('e09zoom').setAttribute('transform', \`translate(540 1920) scale(\${1.3 + 0.08 * suave(p)}) translate(-560 -1920)\`);

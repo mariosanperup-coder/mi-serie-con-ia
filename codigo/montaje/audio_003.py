@@ -128,7 +128,8 @@ for j in range(5): k = k_(0.07); pon(paso_banda(rng.standard_normal(len(k)), 300
 k = k_(0.5); pon(np.sin(2 * np.pi * 70 * k) * np.exp(-k * 10) + paso_banda(rng.standard_normal(len(k)), 100, 1500) * np.exp(-k * 14) * 0.6, E['e06']['ini'] + 1.0, 0.8)  # culetazo
 def ping(t0, f=1320, vol=0.18):
     k = k_(0.35); pon((np.sin(2 * np.pi * f * k) + 0.5 * np.sin(2 * np.pi * f * 1.5 * k)) * np.exp(-k * 9), t0, vol)
-for j in range(14): ping(CLAVE['agosto'] + 0.2 + j * 0.42 + 0.1 * (j % 3), 1100 + 120 * (j % 4))  # notificaciones
+for j in range(5): ping(E['e08']['ini'] + 0.3 + j * 0.6, 1100 + 120 * (j % 4))  # un ping por móvil
+for j in range(8): ping(CLAVE['agosto'] + 0.2 + j * 0.42 + 0.1 * (j % 3), 1100 + 120 * (j % 4), 0.12)  # notificaciones
 sfx += paso_banda(ruido_rosa(n), 250, 1800) * env(E['e09']['ini'], E['e09']['fin'], 0.6, 0.6) * 0.1  # gente
 for j in range(6):  # obturadores
     k = k_(0.12); pon(paso_banda(rng.standard_normal(len(k)), 2000, 8000) * np.exp(-k * 50), E['e09']['ini'] + 0.8 + j * 1.1, 0.4)
