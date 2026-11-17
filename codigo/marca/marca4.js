@@ -4,7 +4,9 @@ const fs = require('fs'), path = require('path');
 const { chromium } = require('playwright');
 const { teoFrente, COLORES_TEO: CT } = require('../personajes/teo');
 const { tinta } = require('../personajes/tinta');
-const { azar, estrellas } = require('../fondos/comun');
+const { azar, estrellas, halo, nube } = require('../fondos/comun');
+const { luciaFrente } = require('../personajes/lucia');
+const { avion } = require('../objetos/objetos');
 let n = 0;
 const aislar = s => { const p = 'w' + (n++) + '_'; return s.replace(/id="([^"]+)"/g, `id="${p}$1"`).replace(/url\(#([^)]+)\)/g, `url(#${p}$1)`); };
 const capa = (svg, x, y, esc) => { const [w, h] = svg.match(/viewBox="0 0 (\d+) (\d+)"/).slice(1).map(Number);
@@ -57,14 +59,48 @@ function perfil() {
   </svg>`;
 }
 
+// 3) Banner de YouTube 2560 x 1440 con Teo y la carpeta (zona segura central 1546 x 423).
+function banner() {
+  const r = azar(33);
+  const pueblo = (y, esc, color) => `<g transform="translate(0 ${y}) scale(${esc} 1)" fill="${color}"><path d="M0 0 V-40 H40 V-70 H70 V-40 H110 V-60 L130 -80 L150 -60 V-30 H190 V-90 H200 V-150 L215 -175 L230 -150 V-90 H240 V-30 H290 V-55 H330 V-20 H380 V-65 L400 -85 L420 -65 V-25 H470 V-45 H520 V0 Z"/></g>`;
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2560 1440" width="2560" height="1440">
+  <defs><linearGradient id="cielo" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#050B14"/><stop offset="0.55" stop-color="#0E2236"/><stop offset="0.8" stop-color="#1B4A60"/><stop offset="1" stop-color="#2A5A68"/></linearGradient>
+  <linearGradient id="niebla" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2A5A68" stop-opacity="0"/><stop offset="1" stop-color="#0A1622" stop-opacity="1"/></linearGradient>
+  ${halo('hLuna', '#FFE3A0', 0.5)}${halo('hTeo', '#FFC066', 0.45)}${halo('hRojo', '#FF4A3A', 0.8)}</defs>
+  <rect width="2560" height="1440" fill="url(#cielo)"/>${estrellas(r, 600, 2560, 0, 1000)}
+  <circle cx="2010" cy="560" r="260" fill="url(#hLuna)"/><circle cx="2010" cy="560" r="78" fill="#F7DFA0"/>
+  <circle cx="1985" cy="540" r="14" fill="#E2C27C"/><circle cx="2035" cy="585" r="10" fill="#E2C27C"/>
+  ${nube(250, 640, 520, r, { opacidad: 0.55 })}${nube(1650, 720, 480, r, { opacidad: 0.6 })}${nube(1100, 520, 380, r, { opacidad: 0.35 })}
+  ${capa(avion(), 1560, 590, 0.16)}
+  <circle cx="1770" cy="600" r="44" fill="url(#hRojo)"/><circle cx="1770" cy="600" r="6" fill="#FF6A50"/>
+  <circle cx="1805" cy="618" r="44" fill="url(#hRojo)"/><circle cx="1805" cy="618" r="6" fill="#FF6A50"/>
+  <path d="M0 900 Q400 800 820 870 T1700 850 T2560 880 V1440 H0 Z" fill="#132A3B"/>${pueblo(905, 4.9, '#0E2030')}
+  ${Array.from({ length: 50 }, () => `<rect x="${(r() * 2500).toFixed(0)}" y="${(830 + r() * 60).toFixed(0)}" width="6" height="8" fill="#F2B35A" opacity="0.85"/>`).join('')}
+  <rect y="880" width="2560" height="560" fill="url(#niebla)"/>
+  <path d="M0 1180 Q500 1080 1100 1150 T2560 1120 V1440 H0 Z" fill="#081420"/>
+  <!-- Nombre a la izquierda -->
+  <text x="930" y="660" text-anchor="middle" font-family="JetBrains Mono" font-weight="800" font-size="70" letter-spacing="16" fill="${CREMA}" stroke="${T}" stroke-width="10" paint-order="stroke">EXPEDIENTE</text>
+  <text x="930" y="850" text-anchor="middle" font-family="Inter" font-weight="900" font-size="230" letter-spacing="8" fill="${AMBAR}" stroke="${T}" stroke-width="18" paint-order="stroke">VELA</text>
+  <text x="930" y="918" text-anchor="middle" font-family="Inter" font-weight="700" font-size="40" fill="${CREMA}">Historias reales que no te contaron</text>
+  <!-- Teo con la carpeta y Tinta (centro-derecha) -->
+  <ellipse cx="1500" cy="740" rx="260" ry="300" fill="url(#hTeo)"/>
+  ${capa(teoConCarpeta(), 1390, 512, 0.53)}
+  ${capa(tinta({ pose: 'tranquilo' }), 1508, 565, 0.18)}
+  <!-- Lucía a la derecha -->
+  ${capa(luciaFrente({ cara: 'esceptica' }), 1800, 512, 0.53)}
+  </svg>`;
+}
+
 (async () => {
   const out = process.argv[2] || '.'; fs.mkdirSync(out, { recursive: true });
   const b = await chromium.launch(); const pg = await b.newPage();
-  for (const [nombre, svg, w, h] of [['logo_teo_transparente.png', logo(), 520, 820], ['perfil_teo_800.png', perfil(), 800, 800]]) {
+  const ban = banner(), i = ban.lastIndexOf('</svg>');
+  for (const [nombre, svg, w, h] of [['logo_transparente.png', logo(), 520, 820], ['perfil_800.png', perfil(), 800, 800], ['banner_youtube_2560x1440.png', ban, 2560, 1440],
+    ['banner_zona_segura_PREVIA.png', ban.slice(0, i) + '<rect x="507" y="508" width="1546" height="423" fill="none" stroke="#0f0" stroke-width="4" stroke-dasharray="20 10"/></svg>', 2560, 1440]]) {
     await pg.setViewportSize({ width: w, height: h });
     await pg.setContent(`<html><body style="margin:0;background:transparent">${svg}</body></html>`);
     await pg.evaluate(() => document.fonts.ready);
-    await pg.screenshot({ path: path.join(out, nombre), omitBackground: true });
+    await pg.screenshot({ path: path.join(out, nombre), omitBackground: !nombre.startsWith('banner') });
   }
   await b.close();
 })();
