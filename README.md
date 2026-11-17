@@ -23,3 +23,15 @@ Shorts verticales (9:16, 30–60 s) de **historias reales de miedo y curiosidade
 - Usar solo música/efectos con licencia comercial clara (guardar la licencia junto al archivo).
 - Historias reales: citar fuentes en el guion y en la descripción del vídeo.
 - Marcar en YouTube el contenido generado con IA cuando sea realista ("contenido alterado o sintético").
+
+## Pendientes
+- [ ] Elegir la **frase de entrada y la de despedida** del protagonista.
+- [ ] Elegir el **nombre del canal** (ver propuestas abajo).
+- [ ] Aprobar el diseño de los personajes (`personajes/PROMPTS.md`).
+
+## Propuestas de nombre (serie y canal)
+1. **Expediente Vela** — @ExpedienteVela — *"Historias reales que no te contaron"* ← recomendado
+2. **Pasó de Verdad** — @PasoDeVerdad
+3. **Archivo Insólito** — @ArchivoInsolito
+4. **Caso Abierto** — @CasoAbiertoShorts
+5. **Lo Que Nadie Te Contó** — @LoQueNadieTeConto

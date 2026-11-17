@@ -3,14 +3,14 @@
 > Rellena lo que tengas; lo que falte lo completamos juntos.
 
 ## Identidad
-- **Nombre:**
-- **Edad aparente:**
-- **Rol en la serie:** (¿narrador? ¿investigador? ¿testigo de las historias?)
-- **Personalidad (3–5 rasgos):**
-- **Frase o muletilla característica:**
+- **Nombre:** Teo Vela "el Vela" (propuesta)
+- **Edad aparente:** 32 años. Hombre, de un pueblo de Cuenca; vive en Madrid
+- **Rol en la serie:** narra las historias e investiga en persona los lugares
+- **Personalidad (3–5 rasgos):** amable, serio, divertido, empático y con un toque de chulo
+- **Frase o muletilla característica:** PENDIENTE (recordar al usuario)
 
 ## Aspecto visual
-- **Estilo de animación:** (2D cartoon, anime, 3D tipo Pixar, cómic oscuro…)
+- **Estilo de animación:** 2D stickman (ver personajes/PROMPTS.md)
 - **Cuerpo / complexión:**
 - **Cara (ojos, pelo, rasgos distintivos):**
 - **Ropa habitual:**
