@@ -24,8 +24,18 @@ Shorts verticales (9:16, 30–60 s) de **historias reales de miedo y curiosidade
 - Historias reales: citar fuentes en el guion y en la descripción del vídeo.
 - Marcar en YouTube el contenido generado con IA cuando sea realista ("contenido alterado o sintético").
 
+## Decisiones tomadas
+- **Historias:** de España, siempre autoconclusivas, sin sangre ni muerte, en estilo documental.
+- **Ritmo:** 2 shorts al día, de 60 a 90 s. Se publican en **YouTube y TikTok**.
+- **Estilo:** 2D stickman. Todo **hecho con código**: personajes, fondos y animación se dibujan en código y la música ambiental oscura se sintetiza en código. Sin herramientas de pago.
+- **Voces:** ElevenLabs, con voces de la biblioteca. Las genera el usuario y las pasa (ver `voces/README.md`).
+- **Guiones:** los escribe Claude (ver `guiones/`).
+- **Objetivo:** monetizar el canal en 3 meses.
+
 ## Pendientes
 - [ ] Elegir la **frase de entrada y la de despedida** del protagonista.
+- [ ] Crear el canal de YouTube y la cuenta de TikTok (lo hace el usuario).
+- [ ] Elegir las voces en ElevenLabs y apuntarlas en `voces/README.md`.
 - [ ] Elegir el **nombre del canal** (ver propuestas abajo).
 - [ ] Aprobar el diseño de los personajes (`personajes/PROMPTS.md`).
 
