@@ -17,12 +17,12 @@
 |---|---|---|---|
 | **Mar 17 nov** | **21:00** | 001 · El caso Manises 👻 (programado) | **Bélmez entero hoy** (guion + audio + montaje) para que salga mañana a las 16:00 |
 | **Mié 18 nov** | **16:00** | Las caras de Bélmez 👻 | Borja (guion, audio y montaje) |
-| **Jue 19 nov** | **16:00** | El Ecce Homo de Borja 🧠 | Borja + guion de Liérganes |
-| **Vie 20 nov** | **16:00** | El hombre pez de Liérganes 👻 | Liérganes + guion del Dioni |
-| **Sáb 21 nov** | **16:00** | El Dioni 🧠 | Dioni + guion de Velilla |
-| **Dom 22 nov** | **16:00** | La campana de Velilla 👻 | Velilla + guion de Altamira · **Revisión semanal** (20:00): qué vídeo retuvo más en YouTube Studio |
-| **Lun 23 nov** | **16:00** | Altamira y la niña a la que nadie creyó 🧠 | Altamira + guion de Canfranc |
-| **Mar 24 nov** | **16:00** | Canfranc y el oro nazi 👻 | Canfranc + guion de Ummo |
+| **Jue 19 nov** | **16:00** | El Ecce Homo de Borja 🧠 | Liérganes (guion, audio y montaje) |
+| **Vie 20 nov** | **16:00** | El hombre pez de Liérganes 👻 | Dioni (guion, audio y montaje) |
+| **Sáb 21 nov** | **16:00** | El Dioni 🧠 | Velilla (guion, audio y montaje) |
+| **Dom 22 nov** | **16:00** | La campana de Velilla 👻 | Altamira (guion, audio y montaje) · **Revisión semanal** (20:00): qué vídeo retuvo más en YouTube Studio |
+| **Lun 23 nov** | **16:00** | Altamira y la niña a la que nadie creyó 🧠 | Canfranc (guion, audio y montaje) |
+| **Mar 24 nov** | **16:00** | Canfranc y el oro nazi 👻 | Ummo (guion, audio y montaje) |
 
 ## Revisión del domingo (10 minutos)
 En YouTube Studio → Contenido → cada Short:
