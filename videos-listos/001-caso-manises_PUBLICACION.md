@@ -25,9 +25,5 @@ Animación basada en hechos reales. Algunos detalles (como el año exacto de la 
 ## Etiquetas de YouTube
 caso manises, ovni manises, incidente ovni manises, manises 1979, ovni españa, ovni valencia, misterios de españa, historias reales, fernando cámara, mirage f1, aterrizaje de emergencia, expediente vela, teo vela
 
-## Texto de TikTok
-Un avión con 109 pasajeros tuvo que aterrizar de emergencia en Valencia… porque algo lo seguía. Pasó de verdad en 1979. ¿Qué crees que era? 👇
-#misterio #ovni #manises #historiasreales #españa #misteriosdeespaña #fyp
-
-## Comentario fijado (los dos)
+## Comentario fijado
 ¿Estrellas, una refinería, la Sexta Flota… o algo que todavía no sabemos explicar? 👀 El piloto siempre dijo: «Yo sé muy bien lo que vi».

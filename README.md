@@ -26,7 +26,7 @@ Shorts verticales (9:16, 30–60 s) de **historias reales de miedo y curiosidade
 
 ## Decisiones tomadas
 - **Historias:** de España, siempre autoconclusivas, sin sangre ni muerte, en estilo documental.
-- **Ritmo:** 2 shorts al día, de 60 a 90 s. Se publican en **YouTube y TikTok**.
+- **Ritmo:** 2 shorts al día, de 60 a 90 s. Se publican **solo en YouTube**.
 - **Estilo:** 2D stickman. Todo **hecho con código**: personajes, fondos y animación se dibujan en código y la música ambiental oscura se sintetiza en código. Sin herramientas de pago.
 - **Voces:** ElevenLabs, con voces de la biblioteca. Las genera el usuario y las pasa (ver `voces/README.md`).
 - **Guiones:** los escribe Claude (ver `guiones/`).
@@ -34,7 +34,7 @@ Shorts verticales (9:16, 30–60 s) de **historias reales de miedo y curiosidade
 
 ## Pendientes
 - [x] Frases de Teo: entrada "Soy Teo Vela… y esto pasó de verdad." · despedida "Expediente cerrado… o eso dicen."
-- [ ] Crear el canal de YouTube y la cuenta de TikTok (lo hace el usuario).
+- [ ] Crear el canal de YouTube (lo hace el usuario).
 - [ ] Elegir las voces en ElevenLabs y apuntarlas en `voces/README.md`.
 - [x] Nombre del canal: **Expediente Vela** (logo y banner en `marca/`).
 - [ ] Aprobar el diseño de los personajes (`personajes/PROMPTS.md`).

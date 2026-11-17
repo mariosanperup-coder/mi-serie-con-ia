@@ -5,7 +5,7 @@ Todo está dibujado en código (`codigo/marca/marca4.js`). Para regenerarlo: `no
 
 | Archivo | Uso |
 |---|---|
-| `perfil_800.png` | Foto de perfil de YouTube y TikTok |
+| `perfil_800.png` | Foto de perfil de YouTube |
 | `logo_transparente.png` | Logo de cuerpo entero, fondo transparente (miniaturas, tarjeta final) |
 | `banner_youtube_2560x1440.png` | Banner de YouTube |
 | `banner_zona_segura_PREVIA.png` | Solo para revisar la zona que se ve en todos los dispositivos |
