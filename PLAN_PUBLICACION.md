@@ -16,24 +16,24 @@
 4. Tú los programas en YouTube Studio.
 
 ## Calendario (el orden de las historias; las fechas se ajustan a lo que esté listo)
-Empezamos el **lunes 23 de noviembre** si para entonces hay 5 vídeos listos (el 001 ya lo está). Si no, se retrasa el arranque, no se publica a medias.
+**Arranque: martes 17 de noviembre de 2026 a las 21:00** con el 001. Cada día se produce el vídeo del día siguiente.
 
 | Fecha | Hora | Episodio | Tipo |
 |---|---|---|---|
-| Lun 23 nov | 21:00 | 001 · El caso Manises | 👻 |
-| Mar 24 nov | 21:00 | Las caras de Bélmez | 👻 |
-| Mié 25 nov | 21:00 | El Ecce Homo de Borja | 🧠 |
-| Jue 26 nov | 21:00 | El hombre pez de Liérganes | 👻 |
-| Vie 27 nov | 21:00 | El Dioni | 🧠 |
-| Sáb 28 nov | 20:30 | La campana de Velilla | 👻 |
-| Dom 29 nov | 20:30 | Altamira y la niña a la que nadie creyó | 🧠 |
-| Lun 30 nov | 21:00 | Canfranc y el oro nazi | 👻 |
-| Mar 1 dic | 21:00 | Ummo: las cartas de "extraterrestres" | 🧠 |
-| Mié 2 dic | 21:00 | Ochate, el pueblo maldito | 👻 |
-| Jue 3 dic | 21:00 | El tesoro del yate Vita | 🧠 |
-| Vie 4 dic | 21:00 | El Palacio de Linares | 👻 |
-| Sáb 5 dic | 20:30 | La torre inclinada de Zaragoza | 🧠 |
-| Dom 6 dic | 20:30 | (nueva historia, la propongo en la siguiente tanda) | 👻 |
+| Mar 17 nov | 21:00 | 001 · El caso Manises | 👻 |
+| Mié 18 nov | 21:00 | Las caras de Bélmez | 👻 |
+| Jue 19 nov | 21:00 | El Ecce Homo de Borja | 🧠 |
+| Vie 20 nov | 21:00 | El hombre pez de Liérganes | 👻 |
+| Sáb 21 nov | 20:30 | El Dioni | 🧠 |
+| Dom 22 nov | 20:30 | La campana de Velilla | 👻 |
+| Lun 23 nov | 21:00 | Altamira y la niña a la que nadie creyó | 🧠 |
+| Mar 24 nov | 21:00 | Canfranc y el oro nazi | 👻 |
+| Mié 25 nov | 21:00 | Ummo: las cartas de "extraterrestres" | 🧠 |
+| Jue 26 nov | 21:00 | Ochate, el pueblo maldito | 👻 |
+| Vie 27 nov | 21:00 | El tesoro del yate Vita | 🧠 |
+| Sáb 28 nov | 20:30 | El Palacio de Linares | 👻 |
+| Dom 29 nov | 20:30 | La torre inclinada de Zaragoza | 🧠 |
+| Lun 30 nov | 21:00 | (nueva historia, la propongo más adelante) | 👻 |
 
 
 ## Fechas especiales
