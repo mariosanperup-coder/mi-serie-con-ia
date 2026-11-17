@@ -21,6 +21,8 @@ const CARAS = {
     preocupado: { cejas: 'M150 104 L184 94 M216 94 L250 104', ojos: 'normal', boca: 'M186 154 q7 -6 14 0 q7 6 14 0' },
     sorpresa:   { cejas: 'M150 90 Q166 80 182 86 M218 86 Q234 80 250 90', ojos: 'grandes', boca: 'O' },
     grita:      { cejas: 'M148 96 L184 106 M216 106 L252 96', ojos: 'grandes', boca: 'G' },
+    amable:     { cejas: 'M150 100 Q166 92 182 98 M218 98 Q234 92 250 100', ojos: 'normal', boca: 'M180 148 Q200 164 220 148' },
+    contento:   { cejas: 'M150 94 Q166 86 182 92 M218 92 Q234 86 250 94', ojos: 'normal', boca: 'M176 146 Q200 172 224 146 Z' },
   },
   perfil: {
     serio:      { cejas: 'M222 100 L254 108', ojo: [240, 124], boca: 'M232 152 L254 150' },
@@ -28,6 +30,8 @@ const CARAS = {
     preocupado: { cejas: 'M222 108 L254 96', ojo: [240, 124], boca: 'M232 154 q6 -5 12 0 q6 5 12 0' },
     sorpresa:   { cejas: 'M222 92 Q238 82 254 90', ojo: [240, 122], boca: 'O' },
     grita:      { cejas: 'M220 98 L254 106', ojo: [240, 122], boca: 'G' },
+    amable:     { cejas: 'M222 102 Q238 94 254 100', ojo: [240, 124], boca: 'M230 150 Q244 160 258 148' },
+    contento:   { cejas: 'M222 96 Q238 88 254 94', ojo: [240, 122], boca: 'M228 148 Q246 166 262 146 Z' },
   },
 };
 
@@ -40,7 +44,7 @@ function cara(vista, nombre) {
       : `<ellipse cx="168" cy="124" rx="6" ry="8" fill="${T}"/><ellipse cx="232" cy="124" rx="6" ry="8" fill="${T}"/>`) + '</g>';
     if (c.boca === 'O') s += `<ellipse cx="200" cy="156" rx="8" ry="10" fill="${T}"/>`;
     else if (c.boca === 'G') s += `<path d="M180 146 Q200 140 220 146 Q216 178 200 178 Q184 178 180 146 Z" fill="${T}"/><path d="M188 168 Q200 162 212 168" stroke="#C0504D" stroke-width="5" fill="none"/>`;
-    else s += `<path d="${c.boca}" stroke="${T}" stroke-width="4.5" fill="none" stroke-linecap="round"/>`;
+    else s += `<path d="${c.boca}" stroke="${T}" stroke-width="4.5" fill="${c.boca.endsWith('Z') ? T : 'none'}" stroke-linecap="round"/>`;
   } else {
     const [x, y] = c.ojo;
     s += `<g class="ojo"><ellipse cx="${x}" cy="${y}" rx="6" ry="8" fill="${T}"/></g>`;
