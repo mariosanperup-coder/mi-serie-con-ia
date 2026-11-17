@@ -34,15 +34,24 @@ function cara(nombre = 'serio') {
     <path d="${f.boca}" stroke="${C.tinta}" stroke-width="4.5" fill="${nombre === 'sorpresa' ? C.tinta : 'none'}" stroke-linecap="round" stroke-linejoin="round"/>`;
 }
 
+// Farol de latón (según la referencia): aro arriba, cúpula con respiraderos, jaula de cristal
+// abombada y base con dos remaches. (x, y) es el punto del aro donde se agarra.
 function farol(x, y, encendido = true) {
-  return `<g transform="translate(${x} ${y})" stroke="${C.tinta}" stroke-width="3.5" stroke-linejoin="round">
-    ${encendido ? `<defs><radialGradient id="halo"><stop offset="0" stop-color="${C.luz}" stop-opacity="0.55"/><stop offset="1" stop-color="${C.luz}" stop-opacity="0"/></radialGradient></defs><circle cx="0" cy="36" r="70" fill="url(#halo)" stroke="none"/>` : ''}
-    <circle cx="0" cy="-6" r="8" fill="none"/>
-    <path d="M-14 4 L14 4 L18 14 L-18 14 Z" fill="${C.laton}"/>
-    <rect x="-15" y="14" width="30" height="44" rx="4" fill="${encendido ? C.luz : '#d9d2bf'}"/>
-    <path d="M-5 14 V58 M5 14 V58" stroke="${C.latonOscuro}" stroke-width="3"/>
-    ${encendido ? `<path d="M0 50 q-7 -10 0 -22 q7 12 0 22Z" fill="#FFB347" stroke="none"/>` : ''}
-    <path d="M-19 58 L19 58 L15 68 L-15 68 Z" fill="${C.laton}"/>
+  const L = C.laton, O = C.latonOscuro, t = C.tinta;
+  return `<g transform="translate(${x} ${y})" stroke="${t}" stroke-width="3" stroke-linejoin="round">
+    ${encendido ? `<defs><radialGradient id="halo"><stop offset="0" stop-color="${C.luz}" stop-opacity="0.55"/><stop offset="1" stop-color="${C.luz}" stop-opacity="0"/></radialGradient></defs><circle cx="0" cy="40" r="72" fill="url(#halo)" stroke="none"/>` : ''}
+    <circle cx="0" cy="0" r="8" fill="none" stroke="${L}" stroke-width="5"/><circle cx="0" cy="0" r="8" fill="none"/>
+    <path d="M-6 8 h12 v6 h-12 z" fill="${L}"/>
+    <path d="M-12 22 Q-12 13 0 13 Q12 13 12 22 Z" fill="${L}"/>
+    <path d="M-18 22 H18 L22 28 H-22 Z" fill="${L}"/>
+    <path d="M-5 17 v3 M0 16 v4 M5 17 v3" stroke="${O}" stroke-width="2"/>
+    <path d="M-16 28 Q-21 44 -16 60 H16 Q21 44 16 28 Z" fill="${encendido ? C.luz : '#D9D6CC'}"/>
+    ${encendido ? `<path d="M0 54 q-8 -10 0 -22 q8 12 0 22Z" fill="#FFB347" stroke="none"/><path d="M0 52 q-3 -5 0 -11 q3 6 0 11Z" fill="#FFF3C4" stroke="none"/>` : `<path d="M-1 46 v8 M1 46 v8" stroke="#bbb"/>`}
+    <path d="M-8 28 Q-10 44 -8 60 M8 28 Q10 44 8 60 M-19 44 H19" stroke="${L}" stroke-width="3" fill="none"/>
+    <path d="M-16 28 Q-21 44 -16 60 H16 Q21 44 16 28 Z" fill="none"/>
+    <rect x="-19" y="60" width="38" height="8" fill="${L}"/>
+    <circle cx="-10" cy="64" r="2" fill="${O}" stroke="none"/><circle cx="10" cy="64" r="2" fill="${O}" stroke="none"/>
+    <path d="M-22 68 H22 V76 H-22 Z" fill="${O}"/>
   </g>`;
 }
 
