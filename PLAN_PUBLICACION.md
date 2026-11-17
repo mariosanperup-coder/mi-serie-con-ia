@@ -1,8 +1,10 @@
 # Plan de publicación: Expediente Vela (solo YouTube)
 
 ## Reglas
-- **Hora fija:** todos los días a las **20:30** (hora de España), programado desde YouTube Studio → *Programar*. Es cuando más gente de España ve Shorts (después de cenar, antes de dormir) y le pega al tono de misterio.
-- **Cuando haya 2 al día:** **13:30** (curiosidad) y **20:30** (miedo/misterio).
+- **2 vídeos al día desde el arranque**, a hora fija (hora de España), programados desde YouTube Studio → *Programar*:
+  - **Lunes a viernes:** **14:00** (curiosidad 🧠, hora de comer) y **21:00** (miedo/misterio 👻, después de cenar).
+  - **Sábados y domingos:** **12:30** y **20:30** (el fin de semana se come y se cena antes de mirar el móvil, y por la noche hay más competencia).
+- **Producción:** un vídeo al día (para no gastar de golpe los créditos de ElevenLabs).
 - **Colchón:** no se publica nada que no esté terminado. Siempre debe haber **al menos 5 vídeos listos** por delante. Si baja de 3, se vuelve a 1 al día hasta recuperar.
 - **Alternar:** miedo → curiosidad → miedo… para no cansar.
 - **Después de publicar (primera hora):** fijar el comentario con la pregunta y responder a los primeros comentarios. Eso ayuda a que YouTube lo empuje.
@@ -14,7 +16,7 @@
 3. Yo pido las imágenes de referencia que falten, monto los 7 vídeos y te paso título, descripción y miniatura de cada uno.
 4. Tú los programas en YouTube Studio.
 
-## Fase 1: arranque, 1 al día (23 nov – 6 dic 2026)
+## Calendario (el orden de las historias; las fechas se ajustan a lo que esté listo)
 Empezamos el **lunes 23 de noviembre** si para entonces hay 5 vídeos listos (el 001 ya lo está). Si no, se retrasa el arranque, no se publica a medias.
 
 | Fecha | Hora | Episodio | Tipo |
@@ -34,8 +36,6 @@ Empezamos el **lunes 23 de noviembre** si para entonces hay 5 vídeos listos (el
 | Sáb 5 dic | 20:30 | La torre inclinada de Zaragoza | 🧠 |
 | Dom 6 dic | 20:30 | (nueva historia, la propongo en la siguiente tanda) | 👻 |
 
-## Fase 2: 2 al día (desde el 7 dic, solo si el colchón lo permite)
-13:30 curiosidad · 20:30 misterio. Necesita 14 vídeos por semana: lo decidimos según cómo vayan las tandas.
 
 ## Fechas especiales
 - **Lun 21 dic, 20:30 → El Gordo de Sodeto**: la víspera del sorteo de Navidad (22 dic). La gente busca la lotería esos días, así que lo guardamos para entonces.
