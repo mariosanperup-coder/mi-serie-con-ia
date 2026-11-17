@@ -11,6 +11,12 @@ const FONDOS = {
   f07_base_aerea: [require('./fondos/f07_base_aerea'), 1080],
   f08_cielo_nubes: [require('./fondos/f08_cielo_nubes'), 3240],
   f09_archivo: [require('./fondos/f09_archivo'), 1080],
+  f10_cabina_pasajeros: [require('./fondos/f10_cabina_pasajeros'), 1080],
+  f11_sala_radar: [require('./fondos/f11_sala_radar'), 1080],
+  f12_cabina_caza: [require('./fondos/f12_cabina_caza'), 1080],
+  f13_refineria: [require('./fondos/f13_refineria'), 1080],
+  f14_hemiciclo: [require('./fondos/f14_hemiciclo'), 1080],
+  f15_flota: [require('./fondos/f15_flota'), 1080],
 };
 (async () => {
   const out = process.argv[2] || '.'; fs.mkdirSync(out, { recursive: true });

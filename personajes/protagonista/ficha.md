@@ -7,7 +7,8 @@
 - **Edad aparente:** 32 años. Hombre, de un pueblo de Cuenca; vive en Madrid
 - **Rol en la serie:** narra las historias e investiga en persona los lugares
 - **Personalidad (3–5 rasgos):** amable, serio, divertido, empático y con un toque de chulo
-- **Frase o muletilla característica:** PENDIENTE (recordar al usuario)
+- **Frase de entrada (tras el gancho):** "Soy Teo Vela… y esto pasó de verdad."
+- **Frase de despedida:** "Expediente cerrado… o eso dicen."
 
 ## Aspecto visual
 - **Estilo de animación:** 2D stickman (ver personajes/PROMPTS.md)

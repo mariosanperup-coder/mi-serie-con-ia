@@ -33,7 +33,7 @@ Shorts verticales (9:16, 30–60 s) de **historias reales de miedo y curiosidade
 - **Objetivo:** monetizar el canal en 3 meses.
 
 ## Pendientes
-- [ ] Elegir la **frase de entrada y la de despedida** del protagonista.
+- [x] Frases de Teo: entrada "Soy Teo Vela… y esto pasó de verdad." · despedida "Expediente cerrado… o eso dicen."
 - [ ] Crear el canal de YouTube y la cuenta de TikTok (lo hace el usuario).
 - [ ] Elegir las voces en ElevenLabs y apuntarlas en `voces/README.md`.
 - [ ] Elegir el **nombre del canal** (ver propuestas abajo).
